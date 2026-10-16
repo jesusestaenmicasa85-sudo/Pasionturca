@@ -29,7 +29,6 @@
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
         .card:active { transform: scale(0.97); }
         
-        /* Banner de Color Cinematográfico */
         .card-img-container { 
             width: 100%; 
             height: 180px; 
@@ -59,7 +58,10 @@
         .card-info { padding: 10px; }
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
-        .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
+        
+        /* Botón flotante oculto por defecto para el público */
+        .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
+        
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--card-bg); width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px; overflow-y: auto; border-top: 1px solid var(--accent-color); }
@@ -90,9 +92,10 @@
         <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
     </div>
     <div class="grid" id="series-grid"></div>
-    <button class="fab-btn" onclick="openAddModal()">+</button>
+    
+    <!-- Botón de administración exclusivo -->
+    <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
 
-    <!-- Modal de Capítulos -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -109,11 +112,10 @@
         </div>
     </div>
 
-    <!-- Modal para Agregar Nueva Serie -->
     <div class="modal-overlay" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 style="font-size: 1.1rem; color: #fff;">Agregar Nueva Serie</h2>
+                <h2 style="font-size: 1.1rem; color: #fff;">Agregar Nueva Serie Oficial</h2>
                 <button class="close-btn" onclick="closeAddModal()">&times;</button>
             </div>
             <div class="form-group"><label>Título</label><input type="text" id="new-title" class="form-input"></div>
@@ -126,25 +128,39 @@
 
     <script>
         const tg = window.Telegram?.WebApp;
+        
+        // =========================================================================
+        // TU IDENTIFICADOR DE ADMINISTRADOR DE TELEGRAM
+        // (Coloca aquí tu ID numérico de Telegram para que el botón '+' solo te salga a ti)
+        // =========================================================================
+        const ADMIN_USER_ID = 0; // Cambia 0 por tu ID real de Telegram si lo sabes
+
         if (tg) {
             tg.expand();
             if (tg.initDataUnsafe?.user) {
-                document.getElementById('user-greeting').innerText = `👋 ${tg.initDataUnsafe.user.first_name}`;
+                const user = tg.initDataUnsafe.user;
+                document.getElementById('user-greeting').innerText = `👋 ${user.first_name}`;
+                
+                // Mostrar el botón '+' solo si coincide tu ID o si quieres probarlo temporalmente
+                if (ADMIN_USER_ID === 0 || user.id === ADMIN_USER_ID) {
+                    document.getElementById('admin-fab').style.display = 'flex';
+                }
             }
+        } else {
+            // Si se abre fuera de Telegram (en navegador normal), ocultar botón admin
+            document.getElementById('admin-fab').style.display = 'none';
         }
 
-        // Paleta Temática Cinematográfica Turca
         const themeGradients = {
-            romance: 'linear-gradient(135deg, #ff007f 0%, #7928ca 100%)',      // Magenta / Violeta
-            passion: 'linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)',      // Coral / Dorado
-            action: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)', // Turquesa Medianoche
-            drama: 'linear-gradient(135deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%)',  // Púrpura / Rosa
-            mystery: 'linear-gradient(135deg, #232526 0%, #414345 100%)',     // Gris Oscuro Cinematográfico
-            classic: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)' // Púrpura Imperial a Fuego
+            romance: 'linear-gradient(135deg, #ff007f 0%, #7928ca 100%)',
+            passion: 'linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)',
+            action: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
+            drama: 'linear-gradient(135deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%)',
+            mystery: 'linear-gradient(135deg, #232526 0%, #414345 100%)',
+            classic: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)'
         };
 
         const seriesData = [
-            // Series en emisión
             { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', episodes: 3, link: 'https://t.me/+EyUPG22tFMBjNjg5', bg: themeGradients.drama },
             { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 2, link: 'https://t.me/+lEYenuKLJztkNjBh', bg: themeGradients.action },
             { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 26, link: 'https://t.me/+pLxw4RXS9vE0YTc5', bg: themeGradients.drama },
@@ -163,8 +179,6 @@
             { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', bg: themeGradients.passion },
             { id: 'gullergunahlar', title: 'Guller ve Gunahlar T3', status: 'emision', episodes: 5, link: 'https://t.me/+sgrRg_6eJokzYjJh', bg: themeGradients.drama },
             { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', episodes: 6, link: 'https://t.me/+SgkFOzeAQk0yNTZh', bg: themeGradients.romance },
-
-            // Series completadas
             { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', bg: themeGradients.classic },
             { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', bg: themeGradients.classic },
             { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx', bg: themeGradients.classic },
@@ -263,7 +277,7 @@
             renderSeries();
             closeAddModal();
 
-            document.getElementById('new-title').value = '';
+            document.getElementById('new-title5').value = '';
             document.getElementById('new-episodes').value = '1';
             document.getElementById('new-link').value = '';
         }
