@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PasiónTurcaTV - Catálogo Oficial</title>
+
+    <!-- Script Oficial de Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Script de Monetización RichAds -->
+    <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
+    <script>
+        window.TelegramAdsController = new TelegramAdsController();
+        window.TelegramAdsController.initialize({
+            pubId: "1025892",
+            appId: "9323",
+        });
+    </script>
+
     <style>
         :root {
             --bg-color: #0d0714;
@@ -59,7 +72,7 @@
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
         
-        /* Botón flotante oculto por defecto para el público */
+        /* Botón '+' restringido */
         .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
@@ -93,7 +106,7 @@
     </div>
     <div class="grid" id="series-grid"></div>
     
-    <!-- Botón de administración exclusivo -->
+    <!-- Botón de administración -->
     <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
 
     <div class="modal-overlay" id="modal">
@@ -106,7 +119,7 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.8rem;">🍿 Redirigiendo al canal privado...</p>
+                <p style="font-size: 0.8rem;">🍿 Cargando enlace de Telegram...</p>
             </div>
             <div class="chapters-list" id="chapters-container"></div>
         </div>
@@ -129,11 +142,8 @@
     <script>
         const tg = window.Telegram?.WebApp;
         
-        // =========================================================================
-        // TU IDENTIFICADOR DE ADMINISTRADOR DE TELEGRAM
-        // (Coloca aquí tu ID numérico de Telegram para que el botón '+' solo te salga a ti)
-        // =========================================================================
-        const ADMIN_USER_ID = 0; // Cambia 0 por tu ID real de Telegram si lo sabes
+        // Pon aquí tu ID numérico de Telegram si deseas restringir el botón '+' solo a ti
+        const ADMIN_USER_ID = 0; 
 
         if (tg) {
             tg.expand();
@@ -141,14 +151,10 @@
                 const user = tg.initDataUnsafe.user;
                 document.getElementById('user-greeting').innerText = `👋 ${user.first_name}`;
                 
-                // Mostrar el botón '+' solo si coincide tu ID o si quieres probarlo temporalmente
                 if (ADMIN_USER_ID === 0 || user.id === ADMIN_USER_ID) {
                     document.getElementById('admin-fab').style.display = 'flex';
                 }
             }
-        } else {
-            // Si se abre fuera de Telegram (en navegador normal), ocultar botón admin
-            document.getElementById('admin-fab').style.display = 'none';
         }
 
         const themeGradients = {
@@ -277,7 +283,7 @@
             renderSeries();
             closeAddModal();
 
-            document.getElementById('new-title5').value = '';
+            document.getElementById('new-title').value = '';
             document.getElementById('new-episodes').value = '1';
             document.getElementById('new-link').value = '';
         }
@@ -293,7 +299,7 @@
                 } else {
                     window.open(channelLink, '_blank');
                 }
-            }, 1200);
+            }, 1000);
         }
 
         renderSeries();
