@@ -16,17 +16,20 @@
             --danger: #ef4444;
             --success: #22c55e;
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             padding-bottom: 30px;
         }
+
         header {
             background: linear-gradient(180deg, rgba(26,15,40,0.95) 0%, rgba(13,7,20,0.8) 100%);
             backdrop-filter: blur(10px);
@@ -36,6 +39,7 @@
             padding: 15px 20px;
             border-bottom: 1px solid rgba(168, 85, 247, 0.2);
         }
+
         .header-title {
             font-size: 1.4rem;
             font-weight: 800;
@@ -46,9 +50,11 @@
             align-items: center;
             justify-content: space-between;
         }
+
         .search-container {
             margin-top: 12px;
         }
+
         .search-input {
             width: 100%;
             padding: 10px 15px;
@@ -59,12 +65,14 @@
             outline: none;
             font-size: 0.9rem;
         }
+
         .categories {
             display: flex;
             gap: 10px;
             padding: 15px 20px 5px;
             overflow-x: auto;
         }
+
         .category-tab {
             padding: 6px 14px;
             border-radius: 15px;
@@ -75,17 +83,20 @@
             cursor: pointer;
             border: 1px solid transparent;
         }
+
         .category-tab.active {
             background: var(--accent-color);
             color: #fff;
             font-weight: 600;
         }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 15px;
             padding: 15px 20px;
         }
+
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -94,20 +105,24 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
+
         .card:active {
             transform: scale(0.97);
         }
+
         .card-img-container {
             width: 100%;
             height: 180px;
             background: #2a1b3d;
             position: relative;
         }
+
         .card-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .badge {
             position: absolute;
             top: 8px;
@@ -117,17 +132,21 @@
             font-size: 0.65rem;
             font-weight: bold;
         }
+
         .badge-emision {
             background: var(--success);
             color: #fff;
         }
+
         .badge-finalizada {
             background: rgba(255, 255, 255, 0.2);
             color: #fff;
         }
+
         .card-info {
             padding: 10px;
         }
+
         .card-title {
             font-size: 0.88rem;
             font-weight: 700;
@@ -137,10 +156,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .card-subtitle {
             font-size: 0.72rem;
             color: var(--text-secondary);
         }
+
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -154,9 +176,11 @@
             justify-content: center;
             align-items: flex-end;
         }
+
         .modal-overlay.active {
             display: flex;
         }
+
         .modal-content {
             background: var(--card-bg);
             width: 100%;
@@ -167,12 +191,14 @@
             overflow-y: auto;
             border-top: 1px solid var(--accent-color);
         }
+
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
+
         .close-btn {
             background: none;
             border: none;
@@ -180,12 +206,14 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+
         .chapters-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
             margin-top: 15px;
         }
+
         .chapter-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(168, 85, 247, 0.2);
@@ -198,6 +226,7 @@
             cursor: pointer;
             font-size: 0.88rem;
         }
+
         .ad-countdown {
             text-align: center;
             padding: 12px;
@@ -209,6 +238,7 @@
     </style>
 </head>
 <body>
+
     <header>
         <div class="header-title">
             <span>PasiónTurcaTV</span>
@@ -218,12 +248,16 @@
             <input type="text" id="search" class="search-input" placeholder="Buscar serie..." onkeyup="filterSeries()">
         </div>
     </header>
+
     <div class="categories">
         <div class="category-tab active" onclick="setCategory('all', this)">Todas</div>
         <div class="category-tab" onclick="setCategory('emision', this)">En Emisión</div>
         <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
     </div>
+
     <div class="grid" id="series-grid"></div>
+
+    <!-- Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -233,12 +267,15 @@
                 </div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
+
             <div id="ad-container" class="ad-countdown" style="display: none;">
                 <p style="font-size: 0.8rem;">🍿 Redirigiendo al canal privado...</p>
             </div>
+
             <div class="chapters-list" id="chapters-container"></div>
         </div>
     </div>
+
     <script>
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -247,34 +284,37 @@
                 document.getElementById('user-greeting').innerText = `👋 ${tg.initDataUnsafe.user.first_name}`;
             }
         }
-        const seriesData = [
-            // Series en emisión (con tus enlaces exactos integrados)
-            { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/YB83B3MyglaJs0HUH', episodes: 3, link: 'https://t.me/your_channel_link' },
-            { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/P6vwNI5jjbnvyjO1r', episodes: 2, link: 'https://t.me/your_channel_link' },
-            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/9eqM90arQ810U1PyV', episodes: 26, link: 'https://t.me/your_channel_link' },
-            { id: 'sevdigim2', title: 'Sevdigim sensin T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/2IhSq14XhWjoMD0TB', episodes: 6, link: 'https://t.me/your_channel_link' },
-            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/EfapEi97EoWNkRKe2', episodes: 18, link: 'https://t.me/your_channel_link' },
-            { id: 'halef2', title: 'Halef T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/ApLy9AmJyweiiUr1y', episodes: 4, link: 'https://t.me/your_channel_link' },
-            { id: 'asktaht', title: 'Ask ve Taht', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/26eOSfgC7U6FJNVOP', episodes: 5, link: 'https://t.me/your_channel_link' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/eQEjDsgxoe6Yaq1rs', episodes: 2, link: 'https://t.me/your_channel_link' },
-            { id: 'abi2', title: 'ABI T2', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/GKmhSQoHTstJoDXiB', episodes: 5, link: 'https://t.me/your_channel_link' },
-            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/bw8NDLCbaXMwMBaGv', episodes: 4, link: 'https://t.me/your_channel_link' },
-            { id: 'uzak', title: 'Uzak Şehir', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/D39cw7h0LvwGVl96x', episodes: 5, link: 'https://t.me/your_channel_link' },
-            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/9tlwjt881yce4EgtL', episodes: 6, link: 'https://t.me/your_channel_link' },
-            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/Ka4a6P3QDE9h0Wqf9', episodes: 7, link: 'https://t.me/your_channel_link' },
-            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/HXhGLOqUCMf15MeyR', episodes: 6, link: 'https://t.me/your_channel_link' },
-            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/eX7Gmzywcm9QZZBIH', episodes: 6, link: 'https://t.me/your_channel_link' },
-            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/K8apWMT7yBXpYAVIB', episodes: 20, link: 'https://t.me/your_channel_link' },
-            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T3', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 5, link: 'https://t.me/your_channel_link' },
-            { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', image: 'https://images.weserv.nl/?url=https://share.google/oMqkuQDoNj3ITMStf', episodes: 6, link: 'https://t.me/your_channel_link' },
 
-            // Series completas
-            { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', image: 'https://images.weserv.nl/?url=https://share.google/0f8woqAQWftryDIAK', episodes: 13, link: 'https://t.me/your_channel_link' },
-            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', image: 'https://images.weserv.nl/?url=https://share.google/Zby9iOv8bvmxn8iXg', episodes: 13, link: 'https://t.me/your_channel_link' },
-            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', image: 'https://images.weserv.nl/?url=https://share.google/DiIhqWtMmPNzapiLp', episodes: 34, link: 'https://t.me/your_channel_link' },
-            { id: 'halef1', title: 'Halef T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&q=80', episodes: 35, link: 'https://t.me/your_channel_link' },
+        const seriesData = [
+            // Nueva serie en emisión
+            { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 3, link: 'https://t.me/your_channel_link' },
+
+            // Series en emisión (con capítulos corregidos)
+            { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=80', episodes: 2, link: 'https://t.me/your_channel_link' },
+            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 26, link: 'https://t.me/your_channel_link' },
+            { id: 'sevdigim2', title: 'Sevdigim sensin T2', status: 'emision', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&q=80', episodes: 6, link: 'https://t.me/your_channel_link' },
+            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80', episodes: 18, link: 'https://t.me/your_channel_link' },
+            { id: 'halef2', title: 'Halef T2', status: 'emision', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80', episodes: 4, link: 'https://t.me/your_channel_link' },
+            { id: 'asktaht', title: 'Ask ve Taht', status: 'emision', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80', episodes: 5, link: 'https://t.me/your_channel_link' },
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 2, link: 'https://t.me/your_channel_link' },
+            { id: 'abi2', title: 'ABI T2', status: 'emision', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80', episodes: 5, link: 'https://t.me/your_channel_link' },
+            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&q=80', episodes: 4, link: 'https://t.me/your_channel_link' },
+            { id: 'uzak', title: 'Uzak Şehir', status: 'emision', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80', episodes: 5, link: 'https://t.me/your_channel_link' },
+            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80', episodes: 6, link: 'https://t.me/your_channel_link' },
+            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 7, link: 'https://t.me/your_channel_link' },
+            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80', episodes: 6, link: 'https://t.me/your_channel_link' },
+            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&q=80', episodes: 6, link: 'https://t.me/your_channel_link' },
+            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80', episodes: 20, link: 'https://t.me/your_channel_link' },
+            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T2', status: 'emision', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80', episodes: 5, link: 'https://t.me/your_channel_link' },
+            { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 6, link: 'https://t.me/your_channel_link' },
+
+            // Series completas (Eşref Rüya dividida en T1 y T2)
+            { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80', episodes: 13, link: 'https://t.me/your_channel_link' },
+            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 13, link: 'https://t.me/your_channel_link' },
+            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 34, link: 'https://t.me/your_channel_link' },
+            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80', episodes: 16, link: 'https://t.me/your_channel_link' },
             { id: 'tasacak1', title: 'Tasacak Bu Deniz T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=80', episodes: 31, link: 'https://t.me/your_channel_link' },
-            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80', episodes: 16, link: 'https://t.me/your_channel_link' },
+            { id: 'halef1', title: 'Halef T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&q=80', episodes: 35, link: 'https://t.me/your_channel_link' },
             { id: 'sevdigin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80', episodes: 15, link: 'https://t.me/your_channel_link' }
         ];
 
