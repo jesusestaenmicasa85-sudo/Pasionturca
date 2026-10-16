@@ -29,7 +29,7 @@
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
         .card:active { transform: scale(0.97); }
         
-        /* Banner de Color con Texto Centrado */
+        /* Banner de Color Cinematográfico */
         .card-img-container { 
             width: 100%; 
             height: 180px; 
@@ -40,6 +40,7 @@
             padding: 15px;
             text-align: center;
             box-sizing: border-box;
+            box-shadow: inset 0 -40px 40px rgba(0,0,0,0.4);
         }
         .poster-title {
             color: #ffffff;
@@ -47,7 +48,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7);
             word-break: break-word;
             line-height: 1.25;
         }
@@ -108,7 +109,7 @@
         </div>
     </div>
 
-    <!-- Modal para Agregar Serie -->
+    <!-- Modal para Agregar Nueva Serie -->
     <div class="modal-overlay" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -132,47 +133,45 @@
             }
         }
 
-        // Degradados de color atractivos para las tarjetas
-        const colorGradients = [
-            'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-            'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-            'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
-            'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
-            'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-            'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-            'linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)',
-            'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
-        ];
+        // Paleta Temática Cinematográfica Turca
+        const themeGradients = {
+            romance: 'linear-gradient(135deg, #ff007f 0%, #7928ca 100%)',      // Magenta / Violeta
+            passion: 'linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)',      // Coral / Dorado
+            action: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)', // Turquesa Medianoche
+            drama: 'linear-gradient(135deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%)',  // Púrpura / Rosa
+            mystery: 'linear-gradient(135deg, #232526 0%, #414345 100%)',     // Gris Oscuro Cinematográfico
+            classic: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)' // Púrpura Imperial a Fuego
+        };
 
         const seriesData = [
             // Series en emisión
-            { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', episodes: 3, link: 'https://t.me/+EyUPG22tFMBjNjg5' },
-            { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 2, link: 'https://t.me/+lEYenuKLJztkNjBh' },
-            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 27, link: 'https://t.me/+pLxw4RXS9vE0YTc5' },
-            { id: 'sevdigim2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 6, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx' },
-            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 18, link: 'https://t.me/+lKj8tnDm2i4zZTZh' },
-            { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 4, link: 'https://t.me/+3wQxoBw6VzVjYWQ5' },
-            { id: 'asktaht', title: 'Ask ve Taht', status: 'emision', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 2, link: 'https://t.me/+pi35KULn2tthNDIx' },
-            { id: 'abi2', title: 'ABI T2', status: 'emision', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx' },
-            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 4, link: 'https://t.me/+q94zhfhkhsgwNDRh' },
-            { id: 'uzak', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx' },
-            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', episodes: 6, link: 'https://t.me/+XBHRFHhky2MxZWI5' },
-            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 7, link: 'https://t.me/+c9wQ6VzuF-NkZDFh' },
-            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx' },
-            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh' },
-            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5' },
-            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T3', status: 'emision', episodes: 5, link: 'https://t.me/+sgrRg_6eJokzYjJh' },
-            { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', episodes: 6, link: 'https://t.me/+SgkFOzeAQk0yNTZh' },
+            { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', episodes: 3, link: 'https://t.me/+EyUPG22tFMBjNjg5', bg: themeGradients.drama },
+            { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 2, link: 'https://t.me/+lEYenuKLJztkNjBh', bg: themeGradients.action },
+            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 26, link: 'https://t.me/+pLxw4RXS9vE0YTc5', bg: themeGradients.drama },
+            { id: 'sevdigim2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 6, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', bg: themeGradients.romance },
+            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 18, link: 'https://t.me/+lKj8tnDm2i4zZTZh', bg: themeGradients.passion },
+            { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 4, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', bg: themeGradients.action },
+            { id: 'asktaht', title: 'Ask ve Taht', status: 'emision', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5', bg: themeGradients.romance },
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 2, link: 'https://t.me/+pi35KULn2tthNDIx', bg: themeGradients.mystery },
+            { id: 'abi2', title: 'ABI T2', status: 'emision', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx', bg: themeGradients.action },
+            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 4, link: 'https://t.me/+q94zhfhkhsgwNDRh', bg: themeGradients.passion },
+            { id: 'uzak', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx', bg: themeGradients.drama },
+            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', episodes: 6, link: 'https://t.me/+XBHRFHhky2MxZWI5', bg: themeGradients.romance },
+            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 7, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', bg: themeGradients.passion },
+            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx', bg: themeGradients.action },
+            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh', bg: themeGradients.romance },
+            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', bg: themeGradients.passion },
+            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T3', status: 'emision', episodes: 5, link: 'https://t.me/+sgrRg_6eJokzYjJh', bg: themeGradients.drama },
+            { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', episodes: 6, link: 'https://t.me/+SgkFOzeAQk0yNTZh', bg: themeGradients.romance },
 
             // Series completadas
-            { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx' },
-            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5' },
-            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx' },
-            { id: 'halef1', title: 'Halef T1', status: 'finalizada', episodes: 35, link: 'https://t.me/+plbLK3zPUuNlYTZh' },
-            { id: 'tasacak1', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx' },
-            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx' },
-            { id: 'sevdigin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx' }
+            { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', bg: themeGradients.classic },
+            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', bg: themeGradients.classic },
+            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx', bg: themeGradients.classic },
+            { id: 'halef1', title: 'Halef T1', status: 'finalizada', episodes: 35, link: 'https://t.me/+plbLK3zPUuNlYTZh', bg: themeGradients.classic },
+            { id: 'tasacak1', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', bg: themeGradients.classic },
+            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', bg: themeGradients.classic },
+            { id: 'sevdigin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', bg: themeGradients.classic }
         ];
 
         let currentCategory = 'all';
@@ -188,14 +187,14 @@
                 return matchesCat && matchesSearch;
             });
 
-            filtered.forEach((s, index) => {
+            filtered.forEach((s) => {
                 const badgeClass = s.status === 'emision' ? 'badge-emision' : 'badge-finalizada';
                 const badgeText = s.status === 'emision' ? 'En Emisión' : 'Completada';
-                const gradient = colorGradients[index % colorGradients.length];
+                const cardBg = s.bg || themeGradients.romance;
 
                 grid.innerHTML += `
                     <div class="card" onclick="openSeries('${s.id}')">
-                        <div class="card-img-container" style="background: ${gradient};">
+                        <div class="card-img-container" style="background: ${cardBg};">
                             <span class="badge ${badgeClass}">${badgeText}</span>
                             <span class="poster-title">${s.title}</span>
                         </div>
@@ -259,7 +258,7 @@
             }
 
             const newId = 'serie_' + Date.now();
-            seriesData.unshift({ id: newId, title, status, episodes, link });
+            seriesData.unshift({ id: newId, title, status, episodes, link, bg: themeGradients.romance });
 
             renderSeries();
             closeAddModal();
