@@ -72,7 +72,7 @@
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
         
-        /* Botón '+' restringido */
+        /* Botón '+' restringido exclusivamente para ti */
         .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
@@ -119,7 +119,7 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.8rem;">🍿 Cargando enlace de Telegram...</p>
+                <p style="font-size: 0.8rem;">🍿 Preparando tu capítulo...</p>
             </div>
             <div class="chapters-list" id="chapters-container"></div>
         </div>
@@ -142,7 +142,7 @@
     <script>
         const tg = window.Telegram?.WebApp;
         
-        // Pon aquí tu ID numérico de Telegram si deseas restringir el botón '+' solo a ti
+        // Cambia 0 por tu ID numérico de Telegram si deseas proteger el botón '+'
         const ADMIN_USER_ID = 0; 
 
         if (tg) {
@@ -292,6 +292,15 @@
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
+            // Invocar anuncios de RichAds al hacer clic en un capítulo
+            if (window.TelegramAdsController && typeof window.TelegramAdsController.showAd === 'function') {
+                try {
+                    window.TelegramAdsController.showAd();
+                } catch (e) {
+                    console.log("Anuncio de RichAds omitido o no disponible:", e);
+                }
+            }
+
             setTimeout(() => {
                 adContainer.style.display = 'none';
                 if (tg && tg.openTelegramLink) {
@@ -299,7 +308,7 @@
                 } else {
                     window.open(channelLink, '_blank');
                 }
-            }, 1000);
+            }, 1200);
         }
 
         renderSeries();
