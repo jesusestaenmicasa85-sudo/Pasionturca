@@ -64,7 +64,6 @@
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
         
-        /* Botón '+' de administrador */
         .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
@@ -98,7 +97,6 @@
     </div>
     <div class="grid" id="series-grid"></div>
     
-    <!-- Botón de administración -->
     <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
 
     <div class="modal-overlay" id="modal">
@@ -133,7 +131,7 @@
 
     <script>
         const tg = window.Telegram?.WebApp;
-        const ADMIN_USER_ID = 0; // Cambia 0 por tu ID de Telegram si deseas restringir el botón '+'
+        const ADMIN_USER_ID = 0;
 
         if (tg) {
             tg.expand();
@@ -149,31 +147,31 @@
         const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
 
         const seriesData = [
-            { id: 'baskalarinin', title: 'Başkalarının Hayatı', status: 'emision', episodes: 3, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
-            { id: 'tasacak2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 2, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz1.jpg' },
+            { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 3, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
+            { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 2, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
             { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 26, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
-            { id: 'sevdigim2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 6, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
+            { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 6, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
             { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 18, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
             { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 4, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'halef2.jpg' },
             { id: 'asktaht', title: 'Ask ve Taht', status: 'emision', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5', poster: baseUrl + 'askvetaht.jpg' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 2, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'halef1.jpg' },
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 2, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
             { id: 'abi2', title: 'ABI T2', status: 'emision', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx', poster: baseUrl + 'abi.jpg' },
             { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 4, link: 'https://t.me/+q94zhfhkhsgwNDRh', poster: baseUrl + 'anneyarisi.jpg' },
-            { id: 'uzak', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'doganinkanunu.jpg' },
-            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', episodes: 6, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdamkaradeniz.jpg' },
-            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 7, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'anneyarisi.jpg' },
+            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
+            { id: 'sevdanates', title: 'Sevdan Bir Ates', status: 'emision', episodes: 6, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanates.jpg' },
+            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 7, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
             { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
             { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
             { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
             { id: 'gullergunahlar', title: 'Guller ve Gunahlar T2', status: 'emision', episodes: 5, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
             { id: 'mercankosk', title: 'Mercan Kosk', status: 'emision', episodes: 6, link: 'https://t.me/+SgkFOzeAQk0yNTZh', poster: baseUrl + 'mercankosk.jpg' },
-            { id: 'doganin1', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', poster: baseUrl + 'doganinkanunu.jpg' },
+            { id: 'doganinkanunu', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', poster: baseUrl + 'doganinkanunu.jpg' },
             { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', poster: baseUrl + 'esrefruya1.jpg' },
             { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx', poster: baseUrl + 'esrefruya2.jpg' },
             { id: 'halef1', title: 'Halef T1', status: 'finalizada', episodes: 35, link: 'https://t.me/+plbLK3zPUuNlYTZh', poster: baseUrl + 'halef1.jpg' },
-            { id: 'tasacak1', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', poster: baseUrl + 'tasacakbudeniz1.jpg' },
-            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', poster: baseUrl + 'abi.jpg' },
-            { id: 'sevdigin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', poster: baseUrl + 'sevdigimsensin2.jpg' }
+            { id: 'tasacakbudeniz1', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', poster: baseUrl + 'tasacakbudeniz1.jpg' },
+            { id: 'yeralti1', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', poster: baseUrl + 'yeralti1.jpg' },
+            { id: 'sevdiginsensin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', poster: baseUrl + 'sevdigimsensin1.jpg' }
         ];
 
         let currentCategory = 'all';
