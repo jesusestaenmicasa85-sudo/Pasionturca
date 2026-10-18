@@ -136,8 +136,8 @@
         const tg = window.Telegram?.WebApp;
         const ADMIN_USER_ID = 0;
 
-        // Inicialización de Adsgram con tu Block ID
-        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
+        // Inicialización de Adsgram con tu Block ID y modo de prueba activo
+        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665", debug: true }) : null;
 
         if (tg) {
             tg.expand();
