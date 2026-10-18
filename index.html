@@ -8,7 +8,10 @@
     <!-- Script Oficial de Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Script de Monetización RichAds -->
+    <!-- Script de Monetización Adsgram -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+    <!-- Script de Monetización RichAds (Opcional/Secundario) -->
     <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
     <script>
         window.TelegramAdsController = new TelegramAdsController();
@@ -109,7 +112,7 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.8rem;">🍿 Preparando tu capítulo...</p>
+                <p style="font-size: 0.8rem;">🍿 Cargando anuncio...</p>
             </div>
             <div class="chapters-list" id="chapters-container"></div>
         </div>
@@ -132,6 +135,9 @@
     <script>
         const tg = window.Telegram?.WebApp;
         const ADMIN_USER_ID = 0;
+
+        // Inicialización de Adsgram con tu Block ID
+        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
 
         if (tg) {
             tg.expand();
@@ -267,26 +273,39 @@
             document.getElementById('new-link').value = '';
         }
 
+        // Función encargada de redirigir al enlace de Telegram
+        function redirectToChapter(channelLink) {
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(channelLink);
+            } else {
+                window.open(channelLink, '_blank');
+            }
+        }
+
+        // Mostrar Anuncio de Adsgram al hacer clic en un capítulo
         function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
-            if (window.TelegramAdsController && typeof window.TelegramAdsController.showAd === 'function') {
-                try {
-                    window.TelegramAdsController.showAd();
-                } catch (e) {
-                    console.log("Anuncio omitido:", e);
-                }
+            if (AdController) {
+                AdController.show().then((result) => {
+                    // El usuario vio el anuncio exitosamente
+                    console.log("Anuncio visto de Adsgram", result);
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                }).catch((result) => {
+                    // Error o anuncio omitido
+                    console.log("Anuncio omitido o fallo en Adsgram", result);
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                });
+            } else {
+                // Si el SDK no cargó o fue bloqueado, abre directamente el enlace
+                setTimeout(() => {
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                }, 1000);
             }
-
-            setTimeout(() => {
-                adContainer.style.display = 'none';
-                if (tg && tg.openTelegramLink) {
-                    tg.openTelegramLink(channelLink);
-                } else {
-                    window.open(channelLink, '_blank');
-                }
-            }, 1200);
         }
 
         renderSeries();
