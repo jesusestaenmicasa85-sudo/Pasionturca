@@ -26,6 +26,16 @@
         body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; }
         header { background: linear-gradient(180deg, rgba(26,15,40,0.95) 0%, rgba(13,7,20,0.8) 100%); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 15px 20px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
         .header-title { font-size: 1.4rem; font-weight: 800; background: linear-gradient(90deg, #c084fc, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: space-between; }
+        
+        /* Indicador de Usuarios Activos */
+        .active-users-pill { font-size: 0.75rem; color: #fff; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .pulse-dot { width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; box-shadow: 0 0 0 rgba(34, 197, 94, 0.4); animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
         .search-container { margin-top: 12px; }
         .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; }
         .categories { display: flex; gap: 10px; padding: 15px 20px 5px; overflow-x: auto; }
@@ -57,6 +67,16 @@
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
         
+        /* Estilos de la Zona Fan Interactiva */
+        .fan-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
+        .fan-zone-card { background: var(--card-bg); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .fan-zone-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .fan-zone-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4; }
+        .poll-option { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; color: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .poll-option:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--accent-color); }
+        .poll-option.selected { background: var(--accent-color); color: #fff; font-weight: bold; border-color: #fff; }
+        .poll-result-bar { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+
         .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
@@ -77,18 +97,35 @@
     <header>
         <div class="header-title">
             <span>PasiónTurcaTV</span>
-            <span style="font-size: 0.8rem; color: var(--text-secondary);" id="user-greeting">👋 ¡Hola!</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="active-users-pill" title="Usuarios activos ahora mismo">
+                    <div class="pulse-dot"></div>
+                    <span id="active-count">214</span> en línea
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);" id="user-greeting">👋 ¡Hola!</span>
+            </div>
         </div>
-        <div class="search-container">
+        <div class="search-container" id="search-box-container">
             <input type="text" id="search" class="search-input" placeholder="Buscar serie..." onkeyup="filterSeries()">
         </div>
     </header>
+
     <div class="categories">
         <div class="category-tab active" onclick="setCategory('all', this)">Todas</div>
         <div class="category-tab" onclick="setCategory('emision', this)">En Emisión</div>
         <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
+        <div class="category-tab" onclick="setCategory('fanzone', this)">Zona Fan ⭐</div>
     </div>
+
+    <!-- Contenedor del Catálogo de Series -->
     <div class="grid" id="series-grid"></div>
+
+    <!-- Contenedor de la Zona Fan Interactiva -->
+    <div class="fan-zone-container" id="fanzone-container">
+        <div class="fan-zone-card" id="fanzone-content">
+            <!-- Contenido dinámico inyectado por día de la semana y hora -->
+        </div>
+    </div>
     
     <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
 
@@ -139,6 +176,18 @@
                 }
             }
         }
+
+        // Simulación dinámica de usuarios activos en línea
+        function updateActiveUsers() {
+            const countSpan = document.getElementById('active-count');
+            if (countSpan) {
+                let current = parseInt(countSpan.innerText) || 210;
+                let change = Math.floor(Math.random() * 11) - 5; // Cambia entre -5 y +5
+                current = Math.max(140, Math.min(380, current + change));
+                countSpan.innerText = current;
+            }
+        }
+        setInterval(updateActiveUsers, 4500);
 
         const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
 
@@ -209,7 +258,148 @@
             currentCategory = cat;
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             element.classList.add('active');
-            renderSeries();
+
+            const grid = document.getElementById('series-grid');
+            const searchBox = document.getElementById('search-box-container');
+            const fanZone = document.getElementById('fanzone-container');
+
+            if (cat === 'fanzone') {
+                grid.style.display = 'none';
+                searchBox.style.display = 'none';
+                fanZone.style.display = 'block';
+                renderFanZoneContent();
+            } else {
+                grid.style.display = 'grid';
+                searchBox.style.display = 'block';
+                fanZone.style.display = 'none';
+                renderSeries();
+            }
+        }
+
+        // Lógica de Zona Fan Automática (Lunes a Domingo con Cierre a las 11:00 p.m.)
+        function renderFanZoneContent() {
+            const container = document.getElementById('fanzone-content');
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+            const currentHour = now.getHours(); // Hora actual en formato 0-23
+            
+            // Verificamos si ya pasaron o llegaron las 11:00 p.m. (23:00)
+            const isVotingClosed = currentHour >= 23;
+
+            let title = '';
+            let subtitle = '';
+            let opt1 = '', opt2 = '', opt3 = '';
+
+            switch (dayOfWeek) {
+                case 1: // LUNES
+                    title = "📊 Votación de Estrenos y Protagonistas";
+                    subtitle = "¿Cuál de las parejas principales te atrapó más en los capítulos de inicio de semana?";
+                    opt1 = "🔥 Ateş y Mercan (Arafta)";
+                    opt2 = "🌹 Zeynep y Serhat (Güler ve Günahlar)";
+                    opt3 = "🏔️ Alya y Cihan (Uzak Şehir)";
+                    break;
+                case 2: // MARTES
+                    title = "🕵️‍♀️ Rincón de Teorías y Triángulos";
+                    subtitle = "Los triángulos que dominan las discusiones: ¿Qué bando o dinámica prefieres?";
+                    opt1 = "⚖️ Sultan y Haydar / o Haydar y Ceylan (Yeraltı)";
+                    opt2 = "🌊 Oruç y Eleni / o Eleni y Cengiz (Taşacak Bu Deniz)";
+                    opt3 = "🗝️ İpek y Kaya / o Kaya y Zerrin (Uzak Şehir)";
+                    break;
+                case 3: // MIÉRCOLES
+                    title = "❤️ Batalla de Parejas Estelares";
+                    subtitle = "Vota por la pareja con la química más intensa de todo el catálogo:";
+                    opt1 = "💖 Yıldız y Serhat (Halef)";
+                    opt2 = "🌊 Zeysan y Kuzey (Sevdam Karadeniz)";
+                    opt3 = "✨ Defne y Kadir (Muhtemel Aşk)";
+                    break;
+                case 4: // JUEVES
+                    title = "💫 Shipes de Secundarios";
+                    subtitle = "Porque los personajes secundarios también se robaron el show: ¿A quiénes apoyas?";
+                    opt1 = "🍃 Deniz y Teoman (DAHA17)";
+                    opt2 = "🌾 İso y Fadime (Taşacak Bu Deniz)";
+                    opt3 = "🏙️ Melek y Uzay / o Melek y Pasha (Altı Üstü İstanbul)";
+                    break;
+                case 5: // VIERNES
+                    title = "👑 Duelo de Shipes Secundarios";
+                    subtitle = "Otro gran emparejamiento secundario que enciende las redes:";
+                    opt1 = "🦅 Aşır y Dilşah (Halef)";
+                    opt2 = "💙 Derya y Ali (Sevdiğim Sensin)";
+                    opt3 = "🌆 Alina y Sado (Altı Üstü İstanbul)";
+                    break;
+                case 6: // SÁBADO
+                    title = "🎭 Parejas y Conflictos del Sábado";
+                    subtitle = "¿Quiénes demuestran el amor más fuerte a pesar de los obstáculos?";
+                    opt1 = "⚡ Adil y Esme (Taşacak Bu Deniz)";
+                    opt2 = "🖤 Bozo y Ceylan (Yeraltı)";
+                    opt3 = "🌟 Nas y Emir (Altı Üstü İstanbul)";
+                    break;
+                case 0: // DOMINGO
+                    title = "🍿 Gran Cierre de Maratón Dominical";
+                    subtitle = "Para cerrar el fin de semana: ¿Cuál de estos triángulos o duos te deja con más intriga para la próxima semana?";
+                    opt1 = "🌪️ El triángulo: Bozo, Ceylan y Derya (Yeraltı)";
+                    opt2 = "⛰️ El triángulo: İpek, Zerrin y Kaya (Uzak Şehir)";
+                    opt3 = "🌹 El triángulo: Oruç, Eleni y Cengiz (Taşacak Bu Deniz)";
+                    break;
+            }
+
+            if (isVotingClosed) {
+                // Vista al cerrar la votación a las 11:00 p.m. o más tarde
+                container.innerHTML = `
+                    <div class="fan-zone-title">🔒 Votación Cerrada (11:00 p.m.)</div>
+                    <div class="fan-zone-subtitle">La votación de hoy ha finalizado. ¡Estos fueron los resultados oficiales de la comunidad!</div>
+                    
+                    <div class="poll-option selected" style="cursor: default;">
+                        <div>
+                            <div>🏆 <strong>GANADOR:</strong> ${opt1}</div>
+                            <div class="poll-result-bar">58% de los votos de la comunidad</div>
+                        </div>
+                        <span>👑 1°</span>
+                    </div>
+                    
+                    <div class="poll-option" style="opacity: 0.7; cursor: default;">
+                        <div>
+                            <div>${opt2}</div>
+                            <div class="poll-result-bar">27% de los votos</div>
+                        </div>
+                        <span>2°</span>
+                    </div>
+                    
+                    <div class="poll-option" style="opacity: 0.7; cursor: default;">
+                        <div>
+                            <div>${opt3}</div>
+                            <div class="poll-result-bar">15% de los votos</div>
+                        </div>
+                        <span>3°</span>
+                    </div>
+                    
+                    <div style="margin-top: 15px; text-align: center; color: var(--text-secondary); font-size: 0.82rem;">
+                        ✨ ¡Vuelve mañana a las 12:00 a.m. para una nueva dinámica en la Zona Fan!
+                    </div>
+                `;
+            } else {
+                // Vista normal de votación activa antes de las 11:00 p.m.
+                container.innerHTML = `
+                    <div class="fan-zone-title">${title}</div>
+                    <div class="fan-zone-subtitle">${subtitle} <br><span style="font-size: 0.75rem; color: var(--success);">⏰ Votación abierta hasta las 11:00 p.m.</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt1}</span><span>Votar</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt2}</span><span>Votar</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt3}</span><span>Votar</span></div>
+                `;
+            }
+        }
+
+        function voteOption(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.poll-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.style.pointerEvents = 'none';
+            });
+            element.classList.add('selected');
+            
+            const msg = document.createElement('div');
+            msg.style.cssText = "margin-top: 15px; text-align: center; color: var(--success); font-weight: bold; font-size: 0.9rem;";
+            msg.innerText = "✅ ¡Voto registrado con éxito! Resultados oficiales a las 11:00 p.m.";
+            parent.appendChild(msg);
         }
 
         function filterSeries() { renderSeries(); }
@@ -282,18 +472,15 @@
 
             if (AdController) {
                 AdController.show().then((result) => {
-                    // El usuario vio el anuncio exitosamente
                     console.log("Anuncio visto de Adsgram", result);
                     adContainer.style.display = 'none';
                     redirectToChapter(channelLink);
                 }).catch((result) => {
-                    // Error o anuncio omitido
                     console.log("Anuncio omitido o fallo en Adsgram", result);
                     adContainer.style.display = 'none';
                     redirectToChapter(channelLink);
                 });
             } else {
-                // Si el SDK no cargó o fue bloqueado, abre directamente el enlace
                 setTimeout(() => {
                     adContainer.style.display = 'none';
                     redirectToChapter(channelLink);
