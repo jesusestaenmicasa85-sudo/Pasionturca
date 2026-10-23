@@ -1,636 +1,500 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PasiónTurcaTV - Trabzon Silver Edition</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasiónTurcaTV - Catálogo Oficial</title>
 
-    <!-- Script Oficial de Telegram WebApp -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Script Oficial de Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Script de Monetización Adsgram -->
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <!-- Script de Monetización Adsgram -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <style>
-        /* =========================================
-           PALETA ROJO & AZUL - TRABZON MODERN
-           ========================================= */
-        :root {
-            --bg-color: #OE7ECO;                             /* Azul Marino  */
-            --card-bg: #OO4C8C;                             /* Azul  Saturado */
-            --accent-color: #ACO8OE;                        /* Rojo Carmesí VÍVIDO */
-            --text-color: #FFFFFF;                          /* Blanco Puro */
-            --text-secondary: #FFFFFF;                      /* Claro / Blanco */
-            --silver-bright: #ffffff;                       /* Blanco Brillante */
-            --success: #57A1OE;                             /* Verde Esmeralda Vívido */
-            --silver-border: rgba(255, 255, 255, 0.45);     /* Borde  Blanco */
-        }
+    <style>
+        :root {
+            --bg-color: #8B92OA;
+            --card-bg: #741353;
+            --accent-color: #BOOC6O;
+            --accent-hover: #F6DF96;
+            --text-color: #f3e8ff;
+            --text-secondary: #FFFFFF;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; }
+        header { background: linear-gradient(180deg, rgba(26,15,40,0.95) 0%, rgba(13,7,20,0.8) 100%); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 15px 20px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
+        .header-title { font-size: 1.4rem; font-weight: 800; background: linear-gradient(90deg, #c084fc, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: space-between; }
+        
+        /* Indicador de Usuarios Activos */
+        .active-users-pill { font-size: 0.75rem; color: #fff; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .pulse-dot { width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; box-shadow: 0 0 0 rgba(34, 197, 94, 0.4); animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
-        /* Fondo con resplandor BLANCO en lugar de dorado */
-        body { 
-            background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.12) 0%, #080e18 80%); 
-            color: var(--text-color); 
-            padding-bottom: 50px; 
-            min-height: 100vh;
-        }
-        
-        /* Header con Marco  / Blanco */
-        header { 
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            padding: 15px 20px; 
-            border-bottom: 2px solid rgba(255, 255, 255, 0.6); 
-            box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15);
-        }
-        
-        .header-title { 
-            font-size: 1.5rem; 
-            font-weight: 900; 
-            color: #ffffff;
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
-        }
-        
-        /* Indicador Usuarios En Línea */
-        .active-users-pill { 
-            font-size: 0.8rem; 
-            color: #13-0442TCX; 
-            background: #059669; 
-            border: 1.5px solid #ffffff; 
-            padding: 5px 12px; 
-            border-radius: 14px; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            font-weight: 800; 
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        .pulse-dot { 
-            width: 9px; 
-            height: 9px; 
-            background-color: #ffffff; 
-            border-radius: 50%; 
-            animation: pulse 1.5s infinite; 
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.6; }
-        }
+        .search-container { margin-top: 12px; }
+        .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; }
+        .categories { display: flex; gap: 10px; padding: 15px 20px 5px; overflow-x: auto; }
+        .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(168, 85, 247, 0.1); color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; }
+        .category-tab.active { background: var(--accent-color); color: #fff; font-weight: 600; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px 20px; }
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
+        .card:active { transform: scale(0.97); }
+        
+        .card-img-container { 
+            width: 100%; 
+            height: 190px; 
+            position: relative; 
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 -50px 30px rgba(0,0,0,0.6);
+        }
 
-        /* Buscador Vívido con Luz Blanca / Plateada al hacer foco */
-        .search-container { margin-top: 14px; }
-        .search-input { 
-            width: 100%; 
-            padding: 12px 18px; 
-            border-radius: 25px; 
-            border: 2px solid rgba(255, 255, 255, 0.5); 
-            background: #1e293b; 
-            color: #fff; 
-            outline: none; 
-            font-size: 0.95rem;
-            font-weight: 600;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
-            transition: all 0.3s;
-        }
-        .search-input:focus { 
-            border-color: #ffffff; 
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); 
-            background: #28354d;
-        }
+        .badge { position: absolute; top: 8px; right: 8px; padding: 3px 8px; border-radius: 8px; font-size: 0.65rem; font-weight: bold; z-index: 2; }
+        .badge-emision { background: var(--success); color: #fff; }
+        .badge-finalizada { background: rgba(255, 255, 255, 0.25); color: #fff; }
+        
+        .card-info { padding: 10px; }
+        .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
+        
+        /* Estilos de la Zona Fan Interactiva */
+        .fan-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
+        .fan-zone-card { background: var(--card-bg); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .fan-zone-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .fan-zone-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4; }
+        .poll-option { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; color: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .poll-option:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--accent-color); }
+        .poll-option.selected { background: var(--accent-color); color: #fff; font-weight: bold; border-color: #fff; }
+        .poll-result-bar { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
 
-        /* Pestañas de Categoría con Bordes Blancos */
-        .categories { display: flex; gap: 10px; padding: 15px 20px 10px; overflow-x: auto; }
-        .category-tab { 
-            padding: 9px 18px; 
-            border-radius: 20px; 
-            background: #1e293b; 
-            color: #ffffff; 
-            font-size: 0.9rem; 
-            font-weight: 800;
-            white-space: nowrap; 
-            cursor: pointer; 
-            border: 2px solid rgba(255, 255, 255, 0.3); 
-            transition: all 0.2s;
-        }
-        .category-tab.active { 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
-            color: #ffffff; 
-            border: 2px solid #ffffff; 
-            box-shadow: 0 4px 18px rgba(220, 38, 38, 0.7);
-        }
-
-        /* Tarjetas de Series con Marcos Blancos */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 16px; padding: 15px 20px; }
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 14px; 
-            overflow: hidden; 
-            border: 2px solid var(--silver-border); 
-            cursor: pointer; 
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-        }
-        .card:hover, .card:active { 
-            transform: translateY(-4px) scale(1.02); 
-            border-color: #ffffff;
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
-        }
-        
-        .card-img-container { 
-            width: 100%; 
-            height: 195px; 
-            position: relative; 
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 10px;
-            box-sizing: border-box;
-            background-size: cover;
-            background-position: center;
-            box-shadow: inset 0 -50px 25px rgba(15, 23, 42, 0.9);
-        }
-
-        /* Badges Vívidos */
-        .badge { position: absolute; top: 8px; right: 8px; padding: 4px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: 900; z-index: 2; }
-        .badge-emision { background: #10b981; color: #ffffff; border: 1px solid #ffffff; box-shadow: 0 2px 10px rgba(16, 185, 129, 0.6); }
-        .badge-finalizada { background: #64748b; color: #ffffff; border: 1px solid #ffffff; }
-        
-        .card-info { padding: 12px; background: #0f172a; }
-        .card-title { font-size: 0.92rem; font-weight: 800; margin-bottom: 4px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-subtitle { font-size: 0.78rem; color: #cbd5e1; font-weight: 700; }
-        
-        /* Zona Fan Vívida (Encuestas) */
-        .fan-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
-        .fan-zone-card { 
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); 
-            border: 2px solid #ffffff; 
-            border-radius: 18px; 
-            padding: 22px; 
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15); 
-        }
-        .fan-zone-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .fan-zone-subtitle { font-size: 0.95rem; color: #ffffff; margin-bottom: 22px; line-height: 1.4; font-weight: 700; }
-        
-        .poll-option { 
-            background: #1e293b; 
-            border: 2px solid var(--silver-border); 
-            padding: 15px 18px; 
-            border-radius: 14px; 
-            margin-bottom: 14px; 
-            color: #fff; 
-            cursor: pointer; 
-            transition: all 0.25s; 
-            font-size: 1rem; 
-            font-weight: 800;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .poll-option:hover { 
-            background: rgba(255, 255, 255, 0.15); 
-            border-color: #ffffff; 
-        }
-        .poll-option.selected { 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
-            color: #ffffff; 
-            border-color: #ffffff; 
-            box-shadow: 0 4px 18px rgba(220, 38, 38, 0.7);
-        }
-
-        /* Botón Flotante Admin (+ ) */
-        .fab-btn { 
-            position: fixed; 
-            bottom: 25px; 
-            right: 25px; 
-            width: 60px; 
-            height: 60px; 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
-            color: #fff; 
-            border-radius: 50%; 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 2.4rem; 
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.8); 
-            cursor: pointer; 
-            z-index: 150; 
-            border: 2px solid #ffffff; 
-        }
-        
-        /* Modal de Capítulos */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
-        .modal-overlay.active { display: flex; }
-        .modal-content { 
-            background: #0f172a; 
-            width: 100%; 
-            max-height: 85vh; 
-            border-top-left-radius: 24px; 
-            border-top-right-radius: 24px; 
-            padding: 20px; 
-            overflow-y: auto; 
-            border-top: 3px solid #ffffff; 
-            box-shadow: 0 -10px 35px rgba(255, 255, 255, 0.2);
-        }
-        
-        .modal-banner { 
-            width: 100%; 
-            height: 160px; 
-            border-radius: 14px; 
-            background-size: cover; 
-            background-position: center; 
-            margin-bottom: 15px; 
-            border: 2px solid rgba(255, 255, 255, 0.6); 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.7); 
-            position: relative; 
-        }
-        .modal-banner-overlay { 
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.95) 100%); 
-            border-radius: 14px; 
-            display: flex; 
-            align-items: flex-end; 
-            padding: 14px; 
-        }
-        .modal-banner-title { color: #ffffff; font-size: 1.3rem; font-weight: 900; }
-
-        /* Tarjetas de Episodios con Borde Blanco/Plateado */
-        .chapters-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-        .episode-card { 
-            background: #1e293b; 
-            border: 2px solid var(--silver-border); 
-            border-radius: 14px; 
-            padding: 12px 16px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-        }
-        .episode-card:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.15); }
-        
-        .episode-info-container { display: flex; align-items: center; gap: 14px; }
-        .episode-thumbnail { width: 50px; height: 50px; border-radius: 10px; background-size: cover; background-position: center; border: 2px solid #ffffff; }
-        .episode-title { color: #ffffff; font-size: 0.98rem; font-weight: 900; }
-        .episode-subtitle { color: #cbd5e1; font-size: 0.8rem; font-weight: 700; }
-
-        .ver-now-btn { 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
-            color: #ffffff; 
-            border-radius: 18px; 
-            padding: 8px 18px; 
-            font-size: 0.82rem; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            border: 1.5px solid #ffffff; 
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
-        }
-
-        .close-btn { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; font-weight: bold; }
-        .ad-countdown { text-align: center; padding: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; margin-bottom: 15px; border: 2px dashed #ffffff; color: #ffffff; font-weight: 800; }
-        
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.85rem; color: #ffffff; margin-bottom: 6px; font-weight: 800; }
-        .form-input, .form-select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); background: #1e293b; color: #fff; outline: none; font-size: 0.95rem; font-weight: 600; }
-        .form-submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: #fff; border: 2px solid #ffffff; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; font-size: 1rem; }
-    </style>
+        .fab-btn { position: fixed; bottom: 25px; right: 25px; width: 55px; height: 55px; background: var(--accent-color); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); cursor: pointer; z-index: 150; border: none; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: flex-end; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--card-bg); width: 100%; max-height: 85vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px; overflow-y: auto; border-top: 1px solid var(--accent-color); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .chapter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 10px; color: #fff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 0.88rem; }
+        .ad-countdown { text-align: center; padding: 12px; background: rgba(168, 85, 247, 0.1); border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-color); }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px; }
+        .form-input, .form-select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; }
+        .form-submit-btn { width: 100%; padding: 12px; background: var(--accent-color); color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="header-title">
-            <span>PasiónTurcaTV</span>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="active-users-pill" title="Usuarios activos ahora mismo">
-                    <div class="pulse-dot"></div>
-                    <span id="active-count">620</span> en línea
-                </div>
-                <span style="font-size: 0.85rem; color: #ffffff;" id="user-greeting">👋 ¡Hola!</span>
-            </div>
-        </div>
-        <div class="search-container" id="search-box-container">
-            <input type="text" id="search" class="search-input" placeholder="Buscar serie..." onkeyup="filterSeries()">
-        </div>
-    </header>
+    <header>
+        <div class="header-title">
+            <span>PasiónTurcaTV</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="active-users-pill" title="Usuarios activos ahora mismo">
+                    <div class="pulse-dot"></div>
+                    <span id="active-count">620</span> en línea
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);" id="user-greeting">👋 ¡Hola!</span>
+            </div>
+        </div>
+        <div class="search-container" id="search-box-container">
+            <input type="text" id="search" class="search-input" placeholder="Buscar serie..." onkeyup="filterSeries()">
+        </div>
+    </header>
 
-    <div class="categories">
-        <div class="category-tab active" onclick="setCategory('all', this)">Todas</div>
-        <div class="category-tab" onclick="setCategory('emision', this)">En Emisión</div>
-        <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
-        <div class="category-tab" onclick="setCategory('fanzone', this)">Zona Fan ⭐</div>
-    </div>
+    <div class="categories">
+        <div class="category-tab active" onclick="setCategory('all', this)">Todas</div>
+        <div class="category-tab" onclick="setCategory('emision', this)">En Emisión</div>
+        <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
+        <div class="category-tab" onclick="setCategory('fanzone', this)">Zona Fan ⭐</div>
+    </div>
 
-    <!-- Contenedor del Catálogo de Series -->
-    <div class="grid" id="series-grid"></div>
+    <!-- Contenedor del Catálogo de Series -->
+    <div class="grid" id="series-grid"></div>
 
-    <!-- Contenedor de la Zona Fan Interactiva -->
-    <div class="fan-zone-container" id="fanzone-container">
-        <div class="fan-zone-card" id="fanzone-content">
-            <!-- Contenido inyectado dinámicamente -->
-        </div>
-    </div>
-    
-    <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
+    <!-- Contenedor de la Zona Fan Interactiva -->
+    <div class="fan-zone-container" id="fanzone-container">
+        <div class="fan-zone-card" id="fanzone-content">
+            <!-- Contenido dinámico inyectado por día de la semana y hora -->
+        </div>
+    </div>
+    
+    <button class="fab-btn" id="admin-fab" onclick="openAddModal()">+</button>
 
-    <!-- Modal de Episodios Rediseñado -->
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content">
-            <!-- Banner Visual de la Serie -->
-            <div class="modal-banner" id="modal-banner-bg">
-                <div class="modal-banner-overlay">
-                    <div class="modal-banner-title" id="modal-title"></div>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span id="modal-subtitle" style="font-size: 0.85rem; color: #ffffff; font-weight:800;"></span>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.85rem;">🍿 Cargando anuncio...</p>
-            </div>
-            <div class="chapters-list" id="chapters-container"></div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-title" style="font-size: 1.1rem; color: #fff;"></h2>
+                    <span id="modal-subtitle" style="font-size: 0.78rem; color: var(--text-secondary);"></span>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="ad-container" class="ad-countdown" style="display: none;">
+                <p style="font-size: 0.8rem;"> Cargando anuncio...</p>
+            </div>
+            <div class="chapters-list" id="chapters-container"></div>
+        </div>
+    </div>
 
-    <!-- Modal Admin Agregar Serie -->
-    <div class="modal-overlay" id="add-modal">
-        <div class="modal-content">
-            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h2 style="font-size: 1.1rem; color: #fff;">Agregar Nueva Serie Oficial</h2>
-                <button class="close-btn" onclick="closeAddModal()">&times;</button>
-            </div>
-            <div class="form-group"><label>Título</label><input type="text" id="new-title" class="form-input"></div>
-            <div class="form-group"><label>Estado</label><select id="new-status" class="form-select"><option value="emision">En Emisión</option><option value="finalizada">Completada</option></select></div>
-            <div class="form-group"><label>Capítulos</label><input type="number" id="new-episodes" class="form-input" value="1"></div>
-            <div class="form-group"><label>Enlace Telegram</label><input type="text" id="new-link" class="form-input" placeholder="https://t.me/..."></div>
-            <div class="form-group"><label>URL Poster / Imagen</label><input type="text" id="new-poster" class="form-input" placeholder="https://..."></div>
-            <button class="form-submit-btn" onclick="addNewSeries()">Guardar Serie</button>
-        </div>
-    </div>
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-size: 1.1rem; color: #fff;">Agregar Nueva Serie Oficial</h2>
+                <button class="close-btn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <div class="form-group"><label>Título</label><input type="text" id="new-title" class="form-input"></div>
+            <div class="form-group"><label>Estado</label><select id="new-status" class="form-select"><option value="emision">En Emisión</option><option value="finalizada">Completada</option></select></div>
+            <div class="form-group"><label>Capítulos</label><input type="number" id="new-episodes" class="form-input" value="1"></div>
+            <div class="form-group"><label>Enlace Telegram</label><input type="text" id="new-link" class="form-input" placeholder="https://t.me/..."></div>
+            <button class="form-submit-btn" onclick="addNewSeries()">Guardar Serie</button>
+        </div>
+    </div>
 
-    <script>
-        const tg = window.Telegram?.WebApp;
-        const ADMIN_USER_ID = 0;
+    <script>
+        const tg = window.Telegram?.WebApp;
+        const ADMIN_USER_ID = 0;
 
-        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
+        // Inicialización de Adsgram en Modo Producción Real (blockId 54665)
+        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
 
-        if (tg) {
-            tg.expand();
-            if (tg.initDataUnsafe?.user) {
-                const user = tg.initDataUnsafe.user;
-                document.getElementById('user-greeting').innerText = `👋 ${user.first_name}`;
-                if (ADMIN_USER_ID === 0 || user.id === ADMIN_USER_ID) {
-                    document.getElementById('admin-fab').style.display = 'flex';
-                }
-            }
-        }
+        if (tg) {
+            tg.expand();
+            if (tg.initDataUnsafe?.user) {
+                const user = tg.initDataUnsafe.user;
+                document.getElementById('user-greeting').innerText = `👋 ${user.first_name}`;
+                if (ADMIN_USER_ID === 0 || user.id === ADMIN_USER_ID) {
+                    document.getElementById('admin-fab').style.display = 'flex';
+                }
+            }
+        }
 
-        let currentUsers = Math.floor(Math.random() * (950 - 450 + 1)) + 450;
-        function updateActiveUsers() {
-            const countSpan = document.getElementById('active-count');
-            if (countSpan) {
-                let change = Math.floor(Math.random() * 25) - 12; 
-                currentUsers = Math.max(380, Math.min(1100, currentUsers + change));
-                countSpan.innerText = currentUsers >= 1000 ? (currentUsers / 1000).toFixed(1) + 'k' : currentUsers;
-            }
-        }
-        setInterval(updateActiveUsers, 4000);
+        // Simulación dinámica de usuarios activos en línea (380 a 1.1k)
+        let currentUsers = Math.floor(Math.random() * (950 - 450 + 1)) + 450;
+        function updateActiveUsers() {
+            const countSpan = document.getElementById('active-count');
+            if (countSpan) {
+                let change = Math.floor(Math.random() * 25) - 12; 
+                currentUsers = Math.max(380, Math.min(1100, currentUsers + change));
+                
+                if (currentUsers >= 1000) {
+                    countSpan.innerText = (currentUsers / 1000).toFixed(1) + 'k';
+                } else {
+                    countSpan.innerText = currentUsers;
+                }
+            }
+        }
+        setInterval(updateActiveUsers, 4000);
 
-        const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
+        const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
 
-        const seriesData = [
-            { id: 'gunesindogduguyor', title: 'Güneşin Doğduğu Yer', status: 'emision', episodes: 6, link: 'https://t.me/+abyIRQIqnYw5NDEx', poster: baseUrl + 'GunesinDogduguYer.jpg' },
-            { id: 'ayniyagmuraltinda', title: 'Aynı yağmur altında', status: 'finalizada', episodes: 7, link: 'https://t.me/+RO-tOt9joNUyNjgx', poster: baseUrl + 'ayniyagmuraltinda.jpg' },
-            { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 17, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
-            { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 2, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
-            { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 4, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
-            { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 3, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
-            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 29, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
-            { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 7, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
-            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 19, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
-            { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 5, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'halef2.jpg' },
-            { id: 'asktaht', title: 'Ask ve Taht', status: 'finalizada', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5', poster: baseUrl + 'askvetaht.jpg' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 3, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
-            { id: 'abi2', title: 'ABI T2', status: 'finalizada', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx', poster: baseUrl + 'abi.jpg' },
-            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 5, link: 'https://t.me/+q94zhfhkhsgwNDRh', poster: baseUrl + 'anneyarisi.jpg' },
-            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
-            { id: 'sevdanbirates1', title: 'Sevdan Bir Ates', status: 'emision', episodes: 7, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanbirates1.jpg' },
-            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 8, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
-            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
-            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
-            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
-            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T2', status: 'emision', episodes: 6, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
-            { id: 'mercankosk', title: 'Mercan Kosk', status: 'finalizada', episodes: 7, link: 'https://t.me/+SgkFOzeAQk0yNTZh', poster: baseUrl + 'mercankosk.jpg' },
-            { id: 'doganinkanunu', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', poster: baseUrl + 'doganinkanunu.jpg' },
-            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', poster: baseUrl + 'esrefruya1.jpg' },
-            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx', poster: baseUrl + 'esrefruya2.jpg' },
-            { id: 'halef1', title: 'Halef T1', status: 'finalizada', episodes: 35, link: 'https://t.me/+plbLK3zPUuNlYTZh', poster: baseUrl + 'halef1.jpg' },
-            { id: 'tasacakbudeniz', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', poster: baseUrl + 'tasacakbudeniz1.jpg' },
-            { id: 'yeralti', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', poster: baseUrl + 'yeralti1.jpg' },
-            { id: 'sevdiginsensin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', poster: baseUrl + 'sevdigimsensin1.jpg' }
-        ];
+        const seriesData = [
+            { id: 'gunesindogduguyor', title: 'Güneşin Doğduğu Yer', status: 'emision', episodes: 6, link: 'https://t.me/+abyIRQIqnYw5NDEx', poster: baseUrl + 'GunesinDogduguYer.jpg' },
+            { id: 'ayniyagmuraltinda', title: 'Aynı yağmur altında', status: 'finalizada', episodes: 7, link: 'https://t.me/+RO-tOt9joNUyNjgx', poster: baseUrl + 'ayniyagmuraltinda.jpg' },
+            { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 17, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
+            { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 2, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
+            { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 4, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
+            { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 3, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
+            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 29, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
+            { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 7, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
+            { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 19, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
+            { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 5, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'halef2.jpg' },
+            { id: 'asktaht', title: 'Ask ve Taht', status: 'finalizada', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5', poster: baseUrl + 'askvetaht.jpg' },
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 3, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
+            { id: 'abi2', title: 'ABI T2', status: 'finalizada', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx', poster: baseUrl + 'abi.jpg' },
+            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 5, link: 'https://t.me/+q94zhfhkhsgwNDRh', poster: baseUrl + 'anneyarisi.jpg' },
+            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 5, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
+            { id: 'sevdanbirates1', title: 'Sevdan Bir Ates', status: 'emision', episodes: 7, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanbirates1.jpg' },
+            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 8, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
+            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
+            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
+            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
+            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T2', status: 'emision', episodes: 6, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
+            { id: 'mercankosk', title: 'Mercan Kosk', status: 'finalizada', episodes: 7, link: 'https://t.me/+SgkFOzeAQk0yNTZh', poster: baseUrl + 'mercankosk.jpg' },
+            { id: 'doganinkanunu', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', poster: baseUrl + 'doganinkanunu.jpg' },
+            { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', poster: baseUrl + 'esrefruya1.jpg' },
+            { id: 'esrefruya2', title: 'ESREF RUYA T2', status: 'finalizada', episodes: 34, link: 'https://t.me/+QCxp935kiVVhNzQx', poster: baseUrl + 'esrefruya2.jpg' },
+            { id: 'halef1', title: 'Halef T1', status: 'finalizada', episodes: 35, link: 'https://t.me/+plbLK3zPUuNlYTZh', poster: baseUrl + 'halef1.jpg' },
+            { id: 'tasacakbudeniz', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', poster: baseUrl + 'tasacakbudeniz1.jpg' },
+            { id: 'yeralti', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', poster: baseUrl + 'yeralti1.jpg' },
+            { id: 'sevdiginsensin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', poster: baseUrl + 'sevdigimsensin1.jpg' }
+        ];
 
-        let currentCategory = 'all';
+        let currentCategory = 'all';
 
-        function renderSeries() {
-            const grid = document.getElementById('series-grid');
-            const searchQuery = document.getElementById('search').value.toLowerCase();
-            grid.innerHTML = '';
+        function renderSeries() {
+            const grid = document.getElementById('series-grid');
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+            grid.innerHTML = '';
 
-            const filtered = seriesData.filter(s => {
-                const matchesCat = currentCategory === 'all' || s.status === currentCategory;
-                const matchesSearch = s.title.toLowerCase().includes(searchQuery);
-                return matchesCat && matchesSearch;
-            });
+            const filtered = seriesData.filter(s => {
+                const matchesCat = currentCategory === 'all' || s.status === currentCategory;
+                const matchesSearch = s.title.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
 
-            filtered.forEach((s) => {
-                const badgeClass = s.status === 'emision' ? 'badge-emision' : 'badge-finalizada';
-                const badgeText = s.status === 'emision' ? 'En Emisión' : 'Completada';
-                const bgStyle = s.poster ? `background-image: url('${s.poster}')` : `background: #152238`;
+            filtered.forEach((s) => {
+                const badgeClass = s.status === 'emision' ? 'badge-emision' : 'badge-finalizada';
+                const badgeText = s.status === 'emision' ? 'En Emisión' : 'Completada';
+                const bgStyle = s.poster ? `background-image: url('${s.poster}')` : `background: #1a0f28`;
 
-                grid.innerHTML += `
-                    <div class="card" onclick="openSeries('${s.id}')">
-                        <div class="card-img-container" style="${bgStyle}">
-                            <span class="badge ${badgeClass}">${badgeText}</span>
-                        </div>
-                        <div class="card-info">
-                            <div class="card-title">${s.title}</div>
-                            <div class="card-subtitle">${s.episodes} Cap. disponibles</div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+                grid.innerHTML += `
+                    <div class="card" onclick="openSeries('${s.id}')">
+                        <div class="card-img-container" style="${bgStyle}">
+                            <span class="badge ${badgeClass}">${badgeText}</span>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-title">${s.title}</div>
+                            <div class="card-subtitle">${s.episodes} Cap. disponibles</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-        function setCategory(cat, element) {
-            currentCategory = cat;
-            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-            element.classList.add('active');
+        function setCategory(cat, element) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
 
-            const grid = document.getElementById('series-grid');
-            const searchBox = document.getElementById('search-box-container');
-            const fanZone = document.getElementById('fanzone-container');
+            const grid = document.getElementById('series-grid');
+            const searchBox = document.getElementById('search-box-container');
+            const fanZone = document.getElementById('fanzone-container');
 
-            if (cat === 'fanzone') {
-                grid.style.display = 'none';
-                searchBox.style.display = 'none';
-                fanZone.style.display = 'block';
-                renderFanZoneContent();
-            } else {
-                grid.style.display = 'grid';
-                searchBox.style.display = 'block';
-                fanZone.style.display = 'none';
-                renderSeries();
-            }
-        }
+            if (cat === 'fanzone') {
+                grid.style.display = 'none';
+                searchBox.style.display = 'none';
+                fanZone.style.display = 'block';
+                renderFanZoneContent();
+            } else {
+                grid.style.display = 'grid';
+                searchBox.style.display = 'block';
+                fanZone.style.display = 'none';
+                renderSeries();
+            }
+        }
 
-        /* Zona Fan Mantenida con Opciones Oficiales */
-        function renderFanZoneContent() {
-            const container = document.getElementById('fanzone-content');
-            
-            container.innerHTML = `
-                <div class="fan-zone-title">⭐ ENCUESTA DE LA SEMANA</div>
-                <div class="fan-zone-subtitle">¿Cuál es tu pareja favorita de "Güneşin Doğduğu Yer"?</div>
-                
-                <div class="poll-option" onclick="voteOption(this, 'Ömer & Leyla')">
-                    <span>Ömer & Leyla</span>
-                    <span style="font-size:0.9rem; color:#ffffff; font-weight:900;">Votar ➔</span>
-                </div>
-                
-                <div class="poll-option" onclick="voteOption(this, 'Kaan & Aslı')">
-                    <span>Kaan & Aslı</span>
-                    <span style="font-size:0.9rem; color:#ffffff; font-weight:900;">Votar ➔</span>
-                </div>
-                
-                <div style="margin-top: 18px; text-align: center; color: #ffffff; font-size: 0.85rem; font-weight:700;">
-                    ✨ Apoya a tu pareja favorita en la comunidad oficial de PasiónTurca.
-                </div>
-            `;
-        }
+        // Lógica de Zona Fan Automática (Lunes a Domingo sin nombres de series a los costados)
+        function renderFanZoneContent() {
+            const container = document.getElementById('fanzone-content');
+            const now = new Date();
+            const dayOfWeek = now.getDay(); 
+            const currentHour = now.getHours(); 
+            
+            const isVotingClosed = currentHour >= 23;
 
-        function voteOption(element, pairName) {
-            const parent = element.parentElement;
-            parent.querySelectorAll('.poll-option').forEach(opt => {
-                opt.classList.remove('selected');
-                opt.style.pointerEvents = 'none';
-            });
-            element.classList.add('selected');
-            
-            const msg = document.createElement('div');
-            msg.style.cssText = "margin-top: 15px; text-align: center; color: #34d399; font-weight: 900; font-size: 1rem;";
-            msg.innerText = `✅ ¡Voto registrado por ${pairName} con éxito!`;
-            parent.appendChild(msg);
-        }
+            const winnerVotes = Math.floor(Math.random() * (570 - 360 + 1)) + 360;
+            const totalVotes = Math.floor(winnerVotes / 0.58);
 
-        function filterSeries() { renderSeries(); }
+            let title = '';
+            let subtitle = '';
+            let opt1 = '', opt2 = '', opt3 = '';
 
-        function openSeries(id) {
-            const serie = seriesData.find(s => s.id === id);
-            if (!serie) return;
+            switch (dayOfWeek) {
+                case 1: // LUNES
+                    title = "📊 Votación de Estrenos y Protagonistas";
+                    subtitle = "¿Cuál de las parejas principales te atrapó más en los capítulos de inicio de semana?";
+                    opt1 = " Ateş y Mercan";
+                    opt2 = " Zeynep y Serhat";
+                    opt3 = " Alya y Cihan";
+                    break;
+                case 2: // MARTES (Triángulos Desglosados Limpios)
+                    title = "🕵️‍♀️ Rincón de Teorías y Dinámicas";
+                    subtitle = "Elige tu pareja o bando favorito dentro de los conflictos de la semana:";
+                    opt1 = " Sultan y Haydar";
+                    opt2 = " Uzay y Melek";
+                    opt3 = " Eleni y Cengiz";
+                    break;
+                case 3: // MIÉRCOLES
+                    title = "❤️ Batalla de Parejas Estelares";
+                    subtitle = "Vota por la pareja con la química más intensa de todo el catálogo:";
+                    opt1 = " Yıldız y Serhat";
+                    opt2 = " Zeysan y Kuzey";
+                    opt3 = " Defne y Kadir";
+                    break;
+                case 4: // JUEVES
+                    title = "💫 Shipes de Secundarios";
+                    subtitle = "Porque los personajes secundarios también se robaron el show: ¿A quiénes apoyas?";
+                    opt1 = " Deniz y Teoman";
+                    opt2 = " İso y Fadime";
+                    opt3 = " Melek y Pasha";
+                    break;
+                case 5: // VIERNES
+                    title = "👑 Duelo de Shipes Secundarios";
+                    subtitle = "Otro gran emparejamiento secundario que enciende las redes:";
+                    opt1 = " Aşır y Dilşah";
+                    opt2 = " Derya y Ali";
+                    opt3 = " Alina y Sado";
+                    break;
+                case 6: // SÁBADO
+                    title = "🎭 Parejas y Conflictos del Sábado";
+                    subtitle = "¿Quiénes demuestran el amor más fuerte a pesar de los obstáculos?";
+                    opt1 = " Adil y Esme";
+                    opt2 = " Eleni y Oruc";
+                    opt3 = " Nas y Emir";
+                    break;
+                case 0: // DOMINGO (Triángulos Desglosados Limpios)
+                    title = "🍿 Gran Cierre de Maratón Dominical";
+                    subtitle = "Elige tu protagonista preferido de fin de semana:";
+                    opt1 = " Bozo";
+                    opt2 = " Cihan";
+                    opt3 = " Adil";
+                    break;
+            }
 
-            document.getElementById('modal-title').innerText = serie.title;
-            document.getElementById('modal-subtitle').innerText = `Capítulos disponibles: ${serie.episodes}`;
-            
-            // Asignar minibanner en el modal
-            const bannerBg = document.getElementById('modal-banner-bg');
-            if (serie.poster) {
-                bannerBg.style.backgroundImage = `url('${serie.poster}')`;
-            } else {
-                bannerBg.style.backgroundImage = `none`;
-                bannerBg.style.backgroundColor = '#1e293b';
-            }
-            
-            const container = document.getElementById('chapters-container');
-            container.innerHTML = '';
+            if (isVotingClosed) {
+                container.innerHTML = `
+                    <div class="fan-zone-title">🔒 Votación Cerrada (8:00 p.m.)</div>
+                    <div class="fan-zone-subtitle">La votación de hoy ha finalizado con <strong>${totalVotes} votos totales</strong>. ¡Resultados oficiales!</div>
+                    
+                    <div class="poll-option selected" style="cursor: default;">
+                        <div>
+                            <div>🏆 <strong>GANADOR:</strong> ${opt1}</div>
+                            <div class="poll-result-bar">58% (${winnerVotes} votos)</div>
+                        </div>
+                        <span>👑 1°</span>
+                    </div>
+                    
+                    <div class="poll-option" style="opacity: 0.7; cursor: default;">
+                        <div>
+                            <div>${opt2}</div>
+                            <div class="poll-result-bar">27% (${Math.floor(totalVotes * 0.27)} votos)</div>
+                        </div>
+                        <span>2°</span>
+                    </div>
+                    
+                    <div class="poll-option" style="opacity: 0.7; cursor: default;">
+                        <div>
+                            <div>${opt3}</div>
+                            <div class="poll-result-bar">15% (${Math.floor(totalVotes * 0.15)} votos)</div>
+                        </div>
+                        <span>3°</span>
+                    </div>
+                    
+                    <div style="margin-top: 15px; text-align: center; color: var(--text-secondary); font-size: 0.82rem;">
+                        ✨ ¡Vuelve mañana a las 12:00 a.m. para una nueva dinámica en la Zona Fan!
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="fan-zone-title">${title}</div>
+                    <div class="fan-zone-subtitle">${subtitle} <br><span style="font-size: 0.75rem; color: var(--success);">⏰ Votación abierta hasta las 8:00 p.m.</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt1}</span><span>Votar</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt2}</span><span>Votar</span></div>
+                    <div class="poll-option" onclick="voteOption(this)"><span>${opt3}</span><span>Votar</span></div>
+                `;
+            }
+        }
 
-            for (let i = serie.episodes; i >= 1; i--) {
-                const thumbImg = serie.poster ? serie.poster : '';
-                container.innerHTML += `
-                    <div class="episode-card" onclick="openChapter('${serie.link}', ${i})">
-                        <div class="episode-info-container">
-                            <div class="episode-thumbnail" style="background-image: url('${thumbImg}')"></div>
-                            <div class="episode-texts">
-                                <span class="episode-title">Capítulo ${i}</span>
-                                <span class="episode-subtitle">Duración: 2h 15min | Calidad: 1080p</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="ver-now-btn">VER AHORA ➔</span>
-                        </div>
-                    </div>
-                `;
-            }
+        function voteOption(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.poll-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.style.pointerEvents = 'none';
+            });
+            element.classList.add('selected');
+            
+            const msg = document.createElement('div');
+            msg.style.cssText = "margin-top: 15px; text-align: center; color: var(--success); font-weight: bold; font-size: 0.9rem;";
+            msg.innerText = "✅ ¡Voto registrado con éxito! Resultados oficiales a las 8:00 p.m.";
+            parent.appendChild(msg);
+        }
 
-            document.getElementById('modal').classList.add('active');
-        }
+        function filterSeries() { renderSeries(); }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.getElementById('ad-container').style.display = 'none';
-        }
+        function openSeries(id) {
+            const serie = seriesData.find(s => s.id === id);
+            if (!serie) return;
 
-        function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
-        function closeAddModal() { document.getElementById('add-modal').classList.remove('active'); }
+            document.getElementById('modal-title').innerText = serie.title;
+            document.getElementById('modal-subtitle').innerText = `Capítulos disponibles: ${serie.episodes}`;
+            
+            const container = document.getElementById('chapters-container');
+            container.innerHTML = '';
 
-        function addNewSeries() {
-            const title = document.getElementById('new-title').value.trim();
-            const status = document.getElementById('new-status').value;
-            const episodes = parseInt(document.getElementById('new-episodes').value) || 1;
-            const link = document.getElementById('new-link').value.trim() || 'https://t.me/';
-            const poster = document.getElementById('new-poster').value.trim();
+            for (let i = serie.episodes; i >= 1; i--) {
+                container.innerHTML += `
+                    <div class="chapter-btn" onclick="openChapter('${serie.link}', ${i})">
+                        <span>Capítulo ${i}</span>
+                        <span style="font-size: 0.8rem; color: var(--accent-color);">Abrir en Telegram ➔</span>
+                    </div>
+                `;
+            }
 
-            if (!title) {
-                alert('Por favor, ingresa el título de la serie.');
-                return;
-            }
+            document.getElementById('modal').classList.add('active');
+        }
 
-            const newId = 'serie_' + Date.now();
-            seriesData.unshift({ id: newId, title, status, episodes, link, poster });
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('ad-container').style.display = 'none';
+        }
 
-            renderSeries();
-            closeAddModal();
+        function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.remove('active'); }
 
-            document.getElementById('new-title').value = '';
-            document.getElementById('new-episodes').value = '1';
-            document.getElementById('new-link').value = '';
-            document.getElementById('new-poster').value = '';
-        }
+        function addNewSeries() {
+            const title = document.getElementById('new-title').value.trim();
+            const status = document.getElementById('new-status').value;
+            const episodes = parseInt(document.getElementById('new-episodes').value) || 1;
+            const link = document.getElementById('new-link').value.trim() || 'https://t.me/';
 
-        function redirectToChapter(channelLink) {
-            if (tg && tg.openTelegramLink) {
-                tg.openTelegramLink(channelLink);
-            } else {
-                window.open(channelLink, '_blank');
-            }
-        }
+            if (!title) {
+                alert('Por favor, ingresa el título de la serie.');
+                return;
+            }
 
-        function openChapter(channelLink, episode) {
-            const adContainer = document.getElementById('ad-container');
-            adContainer.style.display = 'block';
+            const newId = 'serie_' + Date.now();
+            seriesData.unshift({ id: newId, title, status, episodes, link, poster: '' });
 
-            if (AdController) {
-                AdController.show().then((result) => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                }).catch((result) => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                });
-            } else {
-                setTimeout(() => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                }, 1000);
-            }
-        }
+            renderSeries();
+            closeAddModal();
 
-        renderSeries();
-    </script>
+            document.getElementById('new-title').value = '';
+            document.getElementById('new-episodes').value = '1';
+            document.getElementById('new-link').value = '';
+        }
+
+        // Función encargada de redirigir al enlace de Telegram
+        function redirectToChapter(channelLink) {
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(channelLink);
+            } else {
+                window.open(channelLink, '_blank');
+            }
+        }
+
+        // Mostrar Anuncio Real de Adsgram al hacer clic en un capítulo
+        function openChapter(channelLink, episode) {
+            const adContainer = document.getElementById('ad-container');
+            adContainer.style.display = 'block';
+
+            if (AdController) {
+                AdController.show().then((result) => {
+                    console.log("Anuncio visto de Adsgram", result);
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                }).catch((result) => {
+                    console.log("Anuncio omitido o fallo en Adsgram", result);
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                });
+            } else {
+                setTimeout(() => {
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
+                }, 1000);
+            }
+        }
+
+        renderSeries();
+    </script>
 </body>
 </html>
