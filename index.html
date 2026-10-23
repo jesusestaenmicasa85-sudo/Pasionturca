@@ -13,12 +13,12 @@
 
     <style>
         :root {
-            --bg-color: #8B92OA;
-            --card-bg: #741353;
-            --accent-color: #BOOC6O;
-            --accent-hover: #F6DF96;
+            --bg-color: #0d0714;
+            --card-bg: #1a0f28;
+            --accent-color: #a855f7;
+            --accent-hover: #9333ea;
             --text-color: #f3e8ff;
-            --text-secondary: #FFFFFF;
+            --text-secondary: #c084fc;
             --danger: #ef4444;
             --success: #22c55e;
         }
@@ -139,7 +139,7 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.8rem;"> Cargando anuncio...</p>
+                <p style="font-size: 0.8rem;">🍿 Cargando anuncio...</p>
             </div>
             <div class="chapters-list" id="chapters-container"></div>
         </div>
@@ -352,7 +352,7 @@
 
             if (isVotingClosed) {
                 container.innerHTML = `
-                    <div class="fan-zone-title">🔒 Votación Cerrada (8:00 p.m.)</div>
+                    <div class="fan-zone-title">🔒 Votación Cerrada (11:00 p.m.)</div>
                     <div class="fan-zone-subtitle">La votación de hoy ha finalizado con <strong>${totalVotes} votos totales</strong>. ¡Resultados oficiales!</div>
                     
                     <div class="poll-option selected" style="cursor: default;">
@@ -386,7 +386,7 @@
             } else {
                 container.innerHTML = `
                     <div class="fan-zone-title">${title}</div>
-                    <div class="fan-zone-subtitle">${subtitle} <br><span style="font-size: 0.75rem; color: var(--success);">⏰ Votación abierta hasta las 8:00 p.m.</span></div>
+                    <div class="fan-zone-subtitle">${subtitle} <br><span style="font-size: 0.75rem; color: var(--success);">⏰ Votación abierta hasta las 11:00 p.m.</span></div>
                     <div class="poll-option" onclick="voteOption(this)"><span>${opt1}</span><span>Votar</span></div>
                     <div class="poll-option" onclick="voteOption(this)"><span>${opt2}</span><span>Votar</span></div>
                     <div class="poll-option" onclick="voteOption(this)"><span>${opt3}</span><span>Votar</span></div>
@@ -404,7 +404,7 @@
             
             const msg = document.createElement('div');
             msg.style.cssText = "margin-top: 15px; text-align: center; color: var(--success); font-weight: bold; font-size: 0.9rem;";
-            msg.innerText = "✅ ¡Voto registrado con éxito! Resultados oficiales a las 8:00 p.m.";
+            msg.innerText = "✅ ¡Voto registrado con éxito! Resultados oficiales a las 11:00 p.m.";
             parent.appendChild(msg);
         }
 
