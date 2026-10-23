@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PasiónTurcaTV - Trabzon Edition</title>
+    <title>PasiónTurcaTV - Trabzon Silver Edition</title>
 
     <!-- Script Oficial de Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -13,63 +13,63 @@
 
     <style>
         /* =========================================
-           PALETA ALTO CONTRASTE - TRABZON VÍVIDO
+           PALETA ROJO & AZUL - TRABZON MODERN
            ========================================= */
         :root {
-            --bg-color: #0b1326;                             /* Azul Marino Profundo con luz */
-            --card-bg: #152238;                             /* Azul Piedra Saturado */
-            --accent-color: #dc2626;                        /* Rojo Carmesí VÍVIDO Y BRILLANTE */
-            --text-color: #ffffff;                          /* Blanco Puro */
-            --text-secondary: #f59e0b;                      /* Dorado Latón VÍVIDO */
-            --gold-bright: #fbbf24;                         /* Dorado Amarillo Radiante */
-            --success: #10b981;                             /* Verde Esmeralda Vívido */
-            --gold-border: #f59e0b;                         /* Borde Dorado Sólido */
+            --bg-color: #OE7ECO;                             /* Azul Marino  */
+            --card-bg: #OO4C8C;                             /* Azul  Saturado */
+            --accent-color: #ACO8OE;                        /* Rojo Carmesí VÍVIDO */
+            --text-color: #FFFFFF;                          /* Blanco Puro */
+            --text-secondary: #FFFFFF;                      /* Claro / Blanco */
+            --silver-bright: #ffffff;                       /* Blanco Brillante */
+            --success: #57A1OE;                             /* Verde Esmeralda Vívido */
+            --silver-border: rgba(255, 255, 255, 0.45);     /* Borde  Blanco */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        /* Fondo con vida y degradado visible */
+        /* Fondo con resplandor BLANCO en lugar de dorado */
         body { 
-            background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); 
+            background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.12) 0%, #080e18 80%); 
             color: var(--text-color); 
             padding-bottom: 50px; 
             min-height: 100vh;
         }
         
-        /* Header con Marco Dorado Reluciente */
+        /* Header con Marco  / Blanco */
         header { 
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); 
             position: sticky; 
             top: 0; 
             z-index: 100; 
             padding: 15px 20px; 
-            border-bottom: 3px solid var(--gold-bright); 
-            box-shadow: 0 4px 25px rgba(220, 38, 38, 0.4);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.6); 
+            box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15);
         }
         
         .header-title { 
             font-size: 1.5rem; 
             font-weight: 900; 
-            color: var(--gold-bright);
+            color: #ffffff;
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
         }
         
         /* Indicador Usuarios En Línea */
         .active-users-pill { 
             font-size: 0.8rem; 
-            color: #ffffff; 
+            color: #13-0442TCX; 
             background: #059669; 
-            border: 1.5px solid #34d399; 
+            border: 1.5px solid #ffffff; 
             padding: 5px 12px; 
             border-radius: 14px; 
             display: flex; 
             align-items: center; 
             gap: 6px; 
             font-weight: 800; 
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         .pulse-dot { 
             width: 9px; 
@@ -84,61 +84,63 @@
             100% { transform: scale(0.8); opacity: 0.6; }
         }
 
-        /* Buscador Vívido */
+        /* Buscador Vívido con Luz Blanca / Plateada al hacer foco */
         .search-container { margin-top: 14px; }
         .search-input { 
             width: 100%; 
             padding: 12px 18px; 
             border-radius: 25px; 
-            border: 2px solid var(--gold-bright); 
+            border: 2px solid rgba(255, 255, 255, 0.5); 
             background: #1e293b; 
             color: #fff; 
             outline: none; 
             font-size: 0.95rem;
             font-weight: 600;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
         }
         .search-input:focus { 
             border-color: #ffffff; 
-            box-shadow: 0 0 18px rgba(251, 191, 36, 0.6); 
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); 
+            background: #28354d;
         }
 
-        /* Pestañas de Categoría VÍVIDAS */
+        /* Pestañas de Categoría con Bordes Blancos */
         .categories { display: flex; gap: 10px; padding: 15px 20px 10px; overflow-x: auto; }
         .category-tab { 
             padding: 9px 18px; 
             border-radius: 20px; 
             background: #1e293b; 
-            color: var(--gold-bright); 
+            color: #ffffff; 
             font-size: 0.9rem; 
             font-weight: 800;
             white-space: nowrap; 
             cursor: pointer; 
-            border: 2px solid var(--gold-border); 
+            border: 2px solid rgba(255, 255, 255, 0.3); 
             transition: all 0.2s;
         }
         .category-tab.active { 
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
             color: #ffffff; 
             border: 2px solid #ffffff; 
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.7);
+            box-shadow: 0 4px 18px rgba(220, 38, 38, 0.7);
         }
 
-        /* Tarjetas de Series de Alto Impacto */
+        /* Tarjetas de Series con Marcos Blancos */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 16px; padding: 15px 20px; }
         .card { 
             background: var(--card-bg); 
             border-radius: 14px; 
             overflow: hidden; 
-            border: 2px solid var(--gold-bright); 
+            border: 2px solid var(--silver-border); 
             cursor: pointer; 
-            transition: transform 0.2s, box-shadow 0.2s; 
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; 
             box-shadow: 0 6px 18px rgba(0,0,0,0.6);
         }
         .card:hover, .card:active { 
             transform: translateY(-4px) scale(1.02); 
             border-color: #ffffff;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
         }
         
         .card-img-container { 
@@ -162,23 +164,23 @@
         
         .card-info { padding: 12px; background: #0f172a; }
         .card-title { font-size: 0.92rem; font-weight: 800; margin-bottom: 4px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-subtitle { font-size: 0.78rem; color: var(--gold-bright); font-weight: 700; }
+        .card-subtitle { font-size: 0.78rem; color: #cbd5e1; font-weight: 700; }
         
         /* Zona Fan Vívida (Encuestas) */
         .fan-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
         .fan-zone-card { 
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); 
-            border: 3px solid var(--gold-bright); 
+            border: 2px solid #ffffff; 
             border-radius: 18px; 
             padding: 22px; 
-            box-shadow: 0 8px 30px rgba(220, 38, 38, 0.4); 
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15); 
         }
-        .fan-zone-title { font-size: 1.3rem; font-weight: 900; color: var(--gold-bright); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .fan-zone-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .fan-zone-subtitle { font-size: 0.95rem; color: #ffffff; margin-bottom: 22px; line-height: 1.4; font-weight: 700; }
         
         .poll-option { 
             background: #1e293b; 
-            border: 2px solid var(--gold-bright); 
+            border: 2px solid var(--silver-border); 
             padding: 15px 18px; 
             border-radius: 14px; 
             margin-bottom: 14px; 
@@ -192,11 +194,11 @@
             align-items: center; 
         }
         .poll-option:hover { 
-            background: rgba(245, 158, 11, 0.25); 
+            background: rgba(255, 255, 255, 0.15); 
             border-color: #ffffff; 
         }
         .poll-option.selected { 
-            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); 
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
             color: #ffffff; 
             border-color: #ffffff; 
             box-shadow: 0 4px 18px rgba(220, 38, 38, 0.7);
@@ -209,7 +211,7 @@
             right: 25px; 
             width: 60px; 
             height: 60px; 
-            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); 
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
             color: #fff; 
             border-radius: 50%; 
             display: none; 
@@ -233,8 +235,8 @@
             border-top-right-radius: 24px; 
             padding: 20px; 
             overflow-y: auto; 
-            border-top: 4px solid var(--gold-bright); 
-            box-shadow: 0 -10px 35px rgba(220, 38, 38, 0.4);
+            border-top: 3px solid #ffffff; 
+            box-shadow: 0 -10px 35px rgba(255, 255, 255, 0.2);
         }
         
         .modal-banner { 
@@ -244,7 +246,7 @@
             background-size: cover; 
             background-position: center; 
             margin-bottom: 15px; 
-            border: 2px solid var(--gold-bright); 
+            border: 2px solid rgba(255, 255, 255, 0.6); 
             box-shadow: 0 6px 18px rgba(0,0,0,0.7); 
             position: relative; 
         }
@@ -259,11 +261,11 @@
         }
         .modal-banner-title { color: #ffffff; font-size: 1.3rem; font-weight: 900; }
 
-        /* Tarjetas de Episodios con Botón Rojo Vívido */
+        /* Tarjetas de Episodios con Borde Blanco/Plateado */
         .chapters-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .episode-card { 
             background: #1e293b; 
-            border: 2px solid var(--gold-bright); 
+            border: 2px solid var(--silver-border); 
             border-radius: 14px; 
             padding: 12px 16px; 
             display: flex; 
@@ -272,12 +274,12 @@
             cursor: pointer; 
             transition: all 0.2s; 
         }
-        .episode-card:active { transform: scale(0.98); background: rgba(245, 158, 11, 0.2); }
+        .episode-card:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.15); }
         
         .episode-info-container { display: flex; align-items: center; gap: 14px; }
-        .episode-thumbnail { width: 50px; height: 50px; border-radius: 10px; background-size: cover; background-position: center; border: 2px solid var(--gold-bright); }
+        .episode-thumbnail { width: 50px; height: 50px; border-radius: 10px; background-size: cover; background-position: center; border: 2px solid #ffffff; }
         .episode-title { color: #ffffff; font-size: 0.98rem; font-weight: 900; }
-        .episode-subtitle { color: var(--gold-bright); font-size: 0.8rem; font-weight: 700; }
+        .episode-subtitle { color: #cbd5e1; font-size: 0.8rem; font-weight: 700; }
 
         .ver-now-btn { 
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
@@ -292,11 +294,11 @@
         }
 
         .close-btn { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; font-weight: bold; }
-        .ad-countdown { text-align: center; padding: 12px; background: rgba(245, 158, 11, 0.2); border-radius: 12px; margin-bottom: 15px; border: 2px dashed var(--gold-bright); color: var(--gold-bright); font-weight: 800; }
+        .ad-countdown { text-align: center; padding: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; margin-bottom: 15px; border: 2px dashed #ffffff; color: #ffffff; font-weight: 800; }
         
         .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.85rem; color: var(--gold-bright); margin-bottom: 6px; font-weight: 800; }
-        .form-input, .form-select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--gold-bright); background: #1e293b; color: #fff; outline: none; font-size: 0.95rem; font-weight: 600; }
+        .form-group label { display: block; font-size: 0.85rem; color: #ffffff; margin-bottom: 6px; font-weight: 800; }
+        .form-input, .form-select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); background: #1e293b; color: #fff; outline: none; font-size: 0.95rem; font-weight: 600; }
         .form-submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: #fff; border: 2px solid #ffffff; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; font-size: 1rem; }
     </style>
 </head>
@@ -346,7 +348,7 @@
                 </div>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span id="modal-subtitle" style="font-size: 0.85rem; color: #fbbf24; font-weight:800;"></span>
+                <span id="modal-subtitle" style="font-size: 0.85rem; color: #ffffff; font-weight:800;"></span>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div id="ad-container" class="ad-countdown" style="display: none;">
@@ -498,15 +500,15 @@
                 
                 <div class="poll-option" onclick="voteOption(this, 'Ömer & Leyla')">
                     <span>Ömer & Leyla</span>
-                    <span style="font-size:0.9rem; color:#fbbf24; font-weight:900;">Votar ➔</span>
+                    <span style="font-size:0.9rem; color:#ffffff; font-weight:900;">Votar ➔</span>
                 </div>
                 
                 <div class="poll-option" onclick="voteOption(this, 'Kaan & Aslı')">
                     <span>Kaan & Aslı</span>
-                    <span style="font-size:0.9rem; color:#fbbf24; font-weight:900;">Votar ➔</span>
+                    <span style="font-size:0.9rem; color:#ffffff; font-weight:900;">Votar ➔</span>
                 </div>
                 
-                <div style="margin-top: 18px; text-align: center; color: #fbbf24; font-size: 0.85rem; font-weight:700;">
+                <div style="margin-top: 18px; text-align: center; color: #ffffff; font-size: 0.85rem; font-weight:700;">
                     ✨ Apoya a tu pareja favorita en la comunidad oficial de PasiónTurca.
                 </div>
             `;
