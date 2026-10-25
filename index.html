@@ -202,7 +202,7 @@
             { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 17, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
             { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 2, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
             { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 5, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
-            { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 4, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
+            { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 3, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
             { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 29, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
             { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 7, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
             { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 19, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
@@ -217,7 +217,7 @@
             { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 6, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
             { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 6, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
             { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 20, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
-            { id: 'gullergunahlar', title: 'Guller ve Gunahlar T2', status: 'emision', episodes: 6, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
+            { id: 'gullergunahlar', title: 'Güller ve Günahlar', status: 'emision', episodes: 7, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
             { id: 'mercankosk', title: 'Mercan Kosk', status: 'finalizada', episodes: 7, link: 'https://t.me/+SgkFOzeAQk0yNTZh', poster: baseUrl + 'mercankosk.jpg' },
             { id: 'doganinkanunu', title: 'Doganin Kanunu T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+YhgLoH6sie45NDMx', poster: baseUrl + 'doganinkanunu.jpg' },
             { id: 'esrefruya1', title: 'ESREF RUYA T1', status: 'finalizada', episodes: 13, link: 'https://t.me/+TDV2r4oXvd8yYjA5', poster: baseUrl + 'esrefruya1.jpg' },
@@ -226,8 +226,8 @@
             { id: 'tasacakbudeniz', title: 'Tasacak Bu Deniz T1', status: 'finalizada', episodes: 31, link: 'https://t.me/+KqZmk_32HQ1lMmMx', poster: baseUrl + 'tasacakbudeniz1.jpg' },
             { id: 'yeralti', title: 'YERALTI T1', status: 'finalizada', episodes: 16, link: 'https://t.me/+1QlrMYUwhCViMGUx', poster: baseUrl + 'yeralti1.jpg' },
             { id: 'sevdiginsensin1', title: 'SEVDIGIN SENSIN T1', status: 'finalizada', episodes: 15, link: 'https://t.me/+LlXBxpfADgxkYzgx', poster: baseUrl + 'sevdigimsensin1.jpg' }
-            { id: 'gullergunahlar', title: 'Güller ve Günahlar', status: 'emision', episodes: 7, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },   
         ];
+
         let currentCategory = 'all';
 
         function renderSeries() {
@@ -282,7 +282,7 @@
             }
         }
 
-        // Lógica de Zona Fan Automática (Lunes a Domingo sin nombres de series a los costados)
+        // Lógica de Zona Fan Automática (Lunes a Domingo)
         function renderFanZoneContent() {
             const container = document.getElementById('fanzone-content');
             const now = new Date();
@@ -462,7 +462,6 @@
             document.getElementById('new-link').value = '';
         }
 
-        // Función encargada de redirigir al enlace de Telegram
         function redirectToChapter(channelLink) {
             if (tg && tg.openTelegramLink) {
                 tg.openTelegramLink(channelLink);
@@ -471,18 +470,15 @@
             }
         }
 
-        // Mostrar Anuncio Real de Adsgram al hacer clic en un capítulo
         function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
             if (AdController) {
                 AdController.show().then((result) => {
-                    console.log("Anuncio visto de Adsgram", result);
                     adContainer.style.display = 'none';
                     redirectToChapter(channelLink);
                 }).catch((result) => {
-                    console.log("Anuncio omitido o fallo en Adsgram", result);
                     adContainer.style.display = 'none';
                     redirectToChapter(channelLink);
                 });
