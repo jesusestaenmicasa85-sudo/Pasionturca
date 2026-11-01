@@ -14,18 +14,18 @@
     <style>
         :root {
             --bg-color: #0d0714;
-            --card-bg: rgba(26, 15, 40, 0.85);
+            --card-bg: #000000; /* Fondo negro debajo de los banners */
             --accent-color: #a855f7;
             --accent-hover: #9333ea;
             --text-color: #f3e8ff;
-            --text-secondary: #c084fc;
+            --text-secondary: #ffffff; /* Texto de capítulos en blanco */
             --danger: #ef4444;
             --success: #22c55e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; position: relative; min-height: 100vh; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; position: relative; min-height: 100vh; overflow-x: hidden; }
         
-        /* Contenedor y Video de Fondo */
+        /* Contenedor y Videos de Fondo (Múltiples para evitar recargas o reinicios) */
         #bg-video-container {
             position: fixed;
             top: 0;
@@ -35,14 +35,21 @@
             z-index: -1;
             overflow: hidden;
             background-color: var(--bg-color);
-            transition: background-color 0.4s ease;
         }
-        #bg-video {
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.45;
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.4s ease;
+        }
+        .bg-video.active {
+            opacity: 0.45;
+            visibility: visible;
         }
         
         header { background: linear-gradient(180deg, rgba(26,15,40,0.95) 0%, rgba(13,7,20,0.8) 100%); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 15px 20px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
@@ -58,11 +65,31 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        /* Aviso de Sonido */
-        .sound-badge { font-size: 0.72rem; color: #fff; background: rgba(168, 85, 247, 0.25); border: 1px solid rgba(168, 85, 247, 0.5); padding: 4px 10px; border-radius: 12px; display: none; align-items: center; gap: 5px; font-weight: 500; animation: bounceSound 2s infinite; }
-        @keyframes bounceSound {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
+        /* Aviso de Volumen Vertical Flotante a la Derecha */
+        .vertical-sound-toast {
+            position: fixed;
+            top: 90px;
+            right: -150px; /* Oculto inicialmente a la derecha */
+            background: rgba(168, 85, 247, 0.9);
+            color: #fff;
+            padding: 12px 8px;
+            border-radius: 12px 0 0 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            z-index: 300;
+            box-shadow: -4px 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: right 0.4s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 1px;
+        }
+        .vertical-sound-toast.show {
+            right: 0; /* Se desliza hacia la pantalla */
         }
 
         .search-container { margin-top: 12px; }
@@ -71,7 +98,7 @@
         .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(168, 85, 247, 0.1); color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; backdrop-filter: blur(5px); }
         .category-tab.active { background: var(--accent-color); color: #fff; font-weight: 600; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; backdrop-filter: blur(8px); }
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
         .card:active { transform: scale(0.97); }
         
         .card-img-container { 
@@ -92,13 +119,13 @@
         .badge-emision { background: var(--success); color: #fff; }
         .badge-finalizada { background: rgba(255, 255, 255, 0.25); color: #fff; }
         
-        .card-info { padding: 10px; }
+        .card-info { padding: 10px; background-color: #000000; } /* Fondo negro debajo de los banners */
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-subtitle { font-size: 0.72rem; color: var(--text-secondary); }
+        .card-subtitle { font-size: 0.72rem; color: #ffffff; font-weight: 500; } /* Capítulos en blanco claro */
         
         /* Estilos de la sección Grupo Oficial en las Redes */
         .social-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
-        .social-zone-card { background: var(--card-bg); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .social-zone-card { background: var(--card-bg); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         .social-zone-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .social-zone-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4; }
         .social-option { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; }
@@ -122,19 +149,22 @@
 </head>
 <body>
 
-    <!-- Reproductor de Video de Fondo Fijo con Sonido -->
+    <!-- Múltiples videos pre-cargados para evitar recargas o reinicios -->
     <div id="bg-video-container">
-        <video id="bg-video" autoplay loop playsinline></video>
+        <video id="video-all" class="bg-video active" autoplay loop playsinline muted></video>
+        <video id="video-emision" class="bg-video" autoplay loop playsinline muted></video>
+        <video id="video-finalizada" class="bg-video" autoplay loop playsinline muted></video>
+    </div>
+
+    <!-- Aviso Vertical Flotante a la Derecha (3 segundos) -->
+    <div class="vertical-sound-toast" id="sound-toast" onclick="toggleMainAudio()">
+        🔊 SUBE EL VOLUMEN
     </div>
 
     <header>
         <div class="header-title">
             <span>PasiónTurcaTV</span>
             <div class="header-badges">
-                <!-- Aviso de Subir Volumen -->
-                <div class="sound-badge" id="sound-notice">
-                    🔊 Sube el volumen
-                </div>
                 <div class="active-users-pill" title="Usuarios activos ahora mismo">
                     <div class="pulse-dot"></div>
                     <span id="active-count">620</span> en línea
@@ -216,7 +246,6 @@
         const tg = window.Telegram?.WebApp;
         const ADMIN_USER_ID = 0;
 
-        // Inicialización de Adsgram en Modo Producción Real (blockId 54665)
         const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
 
         if (tg) {
@@ -230,7 +259,6 @@
             }
         }
 
-        // Simulación dinámica de usuarios activos en línea (380 a 1.1k)
         let currentUsers = Math.floor(Math.random() * (950 - 450 + 1)) + 450;
         function updateActiveUsers() {
             const countSpan = document.getElementById('active-count');
@@ -249,13 +277,10 @@
 
         const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
 
-        // Mapeo de Videos de Fondo Sonoros por Sección
-        const sectionBgVideos = {
-            'all': baseUrl + 'fadime.mp4',
-            'emision': baseUrl + 'eleni.mp4',
-            'finalizada': baseUrl + 'esme.mp4',
-            'social': null // Fondo negro y sin video en la sección de redes
-        };
+        // Asignación de fuentes de video una sola vez
+        document.getElementById('video-all').src = baseUrl + 'fadime.mp4';
+        document.getElementById('video-emision').src = baseUrl + 'eleni.mp4';
+        document.getElementById('video-finalizada').src = baseUrl + 'esme.mp4';
 
         const seriesData = [
             { id: 'askvegozyasi', title: 'Ask ve Gozyasi', status: 'finalizada', episodes: 7, link: 'https://t.me/+2BiDl_U8UCkzZDgx', poster: baseUrl + 'AskveGozyasi.jpg' },
@@ -292,30 +317,47 @@
         ];
 
         let currentCategory = 'all';
+        let toastTimeout = null;
 
-        function updateBgVideo(cat) {
-            const videoElem = document.getElementById('bg-video');
-            const soundBadge = document.getElementById('sound-notice');
-            const videoSrc = sectionBgVideos[cat];
+        function triggerSoundToast() {
+            const toast = document.getElementById('sound-toast');
+            toast.classList.add('show');
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000); // Desaparece automáticamente a los 3 segundos
+        }
 
-            if (videoSrc) {
-                videoElem.style.display = 'block';
-                soundBadge.style.display = 'flex'; // Muestra el aviso de subir volumen
-                if (videoElem.src !== videoSrc) {
-                    videoElem.muted = false; // Permitir audio en el video de la sección
-                    videoElem.src = videoSrc;
-                    videoElem.play().catch(e => {
-                        console.log('Autoplay con audio restringido por el navegador/Telegram:', e);
-                        // Si el navegador bloquea el audio automático, lo reproduce silenciado como fallback
-                        videoElem.muted = true;
-                        videoElem.play();
-                    });
+        function toggleMainAudio() {
+            const activeVideo = document.querySelector('.bg-video.active');
+            const toast = document.getElementById('sound-toast');
+            if (activeVideo) {
+                activeVideo.muted = !activeVideo.muted;
+                if (!activeVideo.muted) {
+                    toast.innerHTML = "🔊 AUDIO ACTIVADO";
+                } else {
+                    toast.innerHTML = "🔇 SILENCIADO";
                 }
-            } else {
-                videoElem.style.display = 'none';
-                soundBadge.style.display = 'none'; // Oculta el aviso en la sección de redes
-                videoElem.pause();
-                videoElem.src = '';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            }
+        }
+
+        function switchBgVideo(cat) {
+            document.querySelectorAll('.bg-video').forEach(v => {
+                v.classList.remove('active');
+                v.pause();
+            });
+
+            if (cat !== 'social') {
+                const targetVideo = document.getElementById('video-' + cat);
+                if (targetVideo) {
+                    targetVideo.classList.add('active');
+                    targetVideo.play().catch(e => console.log("Reproducción pendiente de interacción", e));
+                    triggerSoundToast(); // Muestra el aviso vertical derecho por 3 segundos
+                }
             }
         }
 
@@ -354,8 +396,7 @@
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             element.classList.add('active');
 
-            // Actualizar video de fondo y su sonido/aviso
-            updateBgVideo(cat);
+            switchBgVideo(cat);
 
             const grid = document.getElementById('series-grid');
             const searchBox = document.getElementById('search-box-container');
@@ -455,8 +496,8 @@
             }
         }
 
-        // Inicializar video predeterminado con sonido (Sección "Todas") y catálogo
-        updateBgVideo('all');
+        // Inicializar inicio limpio
+        switchBgVideo('all');
         renderSeries();
     </script>
 </body>
