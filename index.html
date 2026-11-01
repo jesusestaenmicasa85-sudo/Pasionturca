@@ -14,18 +14,18 @@
     <style>
         :root {
             --bg-color: #0d0714;
-            --card-bg: #000000; /* Fondo negro debajo de los banners */
+            --card-bg: #000000;
             --accent-color: #a855f7;
             --accent-hover: #9333ea;
-            --text-color: #f3e8ff;
-            --text-secondary: #ffffff; /* Texto de capítulos en blanco */
+            --text-color: #ffffff;
+            --text-secondary: #ffffff;
             --danger: #ef4444;
             --success: #22c55e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; position: relative; min-height: 100vh; overflow-x: hidden; }
         
-        /* Contenedor y Videos de Fondo (Múltiples para evitar recargas o reinicios) */
+        /* Contenedor y Videos de Fondo */
         #bg-video-container {
             position: fixed;
             top: 0;
@@ -52,25 +52,30 @@
             visibility: visible;
         }
         
-        header { background: linear-gradient(180deg, rgba(26,15,40,0.95) 0%, rgba(13,7,20,0.8) 100%); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 15px 20px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); }
-        .header-title { font-size: 1.4rem; font-weight: 800; background: linear-gradient(90deg, #c084fc, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: space-between; }
-        
-        /* Indicadores Superiores */
-        .header-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-        .active-users-pill { font-size: 0.75rem; color: #fff; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
-        .pulse-dot { width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; box-shadow: 0 0 0 rgba(34, 197, 94, 0.4); animation: pulse 2s infinite; }
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        /* Cabecera Superior en Negro Puro */
+        header { 
+            background: #000000; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            padding: 15px 20px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+        .header-title { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            color: #ffffff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
         }
 
-        /* Aviso de Volumen Vertical Flotante a la Derecha */
+        /* Cartel Informativo de Audio (Sin clicks, solo notificación visual) */
         .vertical-sound-toast {
             position: fixed;
             top: 90px;
-            right: -150px; /* Oculto inicialmente a la derecha */
-            background: rgba(168, 85, 247, 0.9);
+            right: -160px;
+            background: rgba(168, 85, 247, 0.95);
             color: #fff;
             padding: 12px 8px;
             border-radius: 12px 0 0 12px;
@@ -82,20 +87,20 @@
             box-shadow: -4px 4px 15px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.3);
             transition: right 0.4s ease-in-out;
-            cursor: pointer;
+            pointer-events: none;
             display: flex;
             align-items: center;
             gap: 6px;
             letter-spacing: 1px;
         }
         .vertical-sound-toast.show {
-            right: 0; /* Se desliza hacia la pantalla */
+            right: 0;
         }
 
         .search-container { margin-top: 12px; }
-        .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; backdrop-filter: blur(5px); }
+        .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; outline: none; font-size: 0.9rem; }
         .categories { display: flex; gap: 10px; padding: 15px 20px 5px; overflow-x: auto; }
-        .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(168, 85, 247, 0.1); color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; backdrop-filter: blur(5px); }
+        .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); color: #ffffff; font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; backdrop-filter: blur(5px); }
         .category-tab.active { background: var(--accent-color); color: #fff; font-weight: 600; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px 20px; }
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
@@ -119,15 +124,15 @@
         .badge-emision { background: var(--success); color: #fff; }
         .badge-finalizada { background: rgba(255, 255, 255, 0.25); color: #fff; }
         
-        .card-info { padding: 10px; background-color: #000000; } /* Fondo negro debajo de los banners */
+        .card-info { padding: 10px; background-color: #000000; }
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-subtitle { font-size: 0.72rem; color: #ffffff; font-weight: 500; } /* Capítulos en blanco claro */
+        .card-subtitle { font-size: 0.72rem; color: #ffffff; font-weight: 500; }
         
         /* Estilos de la sección Grupo Oficial en las Redes */
         .social-zone-container { padding: 20px; max-width: 600px; margin: 0 auto; display: none; }
-        .social-zone-card { background: var(--card-bg); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .social-zone-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         .social-zone-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .social-zone-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4; }
+        .social-zone-subtitle { font-size: 0.85rem; color: #ffffff; margin-bottom: 20px; line-height: 1.4; }
         .social-option { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; }
         .social-option:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--accent-color); }
 
@@ -142,35 +147,29 @@
         .chapter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 10px; color: #fff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 0.88rem; }
         .ad-countdown { text-align: center; padding: 12px; background: rgba(168, 85, 247, 0.1); border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-color); }
         .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px; }
+        .form-group label { display: block; font-size: 0.8rem; color: #ffffff; margin-bottom: 5px; }
         .form-input, .form-select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; }
         .form-submit-btn { width: 100%; padding: 12px; background: var(--accent-color); color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- Múltiples videos pre-cargados para evitar recargas o reinicios -->
+    <!-- Videos de Fondo Fijos -->
     <div id="bg-video-container">
         <video id="video-all" class="bg-video active" autoplay loop playsinline muted></video>
         <video id="video-emision" class="bg-video" autoplay loop playsinline muted></video>
         <video id="video-finalizada" class="bg-video" autoplay loop playsinline muted></video>
     </div>
 
-    <!-- Aviso Vertical Flotante a la Derecha (3 segundos) -->
-    <div class="vertical-sound-toast" id="sound-toast" onclick="toggleMainAudio()">
-        🔊 SUBE EL VOLUMEN
+    <!-- Cartel Informativo de Audio Flotante -->
+    <div class="vertical-sound-toast" id="sound-toast">
+        🔊 VIDEO CON AUDIO
     </div>
 
     <header>
         <div class="header-title">
             <span>PasiónTurcaTV</span>
-            <div class="header-badges">
-                <div class="active-users-pill" title="Usuarios activos ahora mismo">
-                    <div class="pulse-dot"></div>
-                    <span id="active-count">620</span> en línea
-                </div>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);" id="user-greeting">👋 ¡Hola!</span>
-            </div>
+            <span style="font-size: 0.85rem; color: #ffffff; font-weight: 500;" id="user-greeting">👋 ¡Hola!</span>
         </div>
         <div class="search-container" id="search-box-container">
             <input type="text" id="search" class="search-input" placeholder="Buscar serie..." onkeyup="filterSeries()">
@@ -217,7 +216,7 @@
             <div class="modal-header">
                 <div>
                     <h2 id="modal-title" style="font-size: 1.1rem; color: #fff;"></h2>
-                    <span id="modal-subtitle" style="font-size: 0.78rem; color: var(--text-secondary);"></span>
+                    <span id="modal-subtitle" style="font-size: 0.78rem; color: #ffffff;"></span>
                 </div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
@@ -259,28 +258,31 @@
             }
         }
 
-        let currentUsers = Math.floor(Math.random() * (950 - 450 + 1)) + 450;
-        function updateActiveUsers() {
-            const countSpan = document.getElementById('active-count');
-            if (countSpan) {
-                let change = Math.floor(Math.random() * 25) - 12; 
-                currentUsers = Math.max(380, Math.min(1100, currentUsers + change));
-                
-                if (currentUsers >= 1000) {
-                    countSpan.innerText = (currentUsers / 1000).toFixed(1) + 'k';
-                } else {
-                    countSpan.innerText = currentUsers;
+        const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
+
+        // Asignación de fuentes de video
+        const vAll = document.getElementById('video-all');
+        const vEmi = document.getElementById('video-emision');
+        const vFin = document.getElementById('video-finalizada');
+
+        vAll.src = baseUrl + 'fadime.mp4';
+        vEmi.src = baseUrl + 'eleni.mp4';
+        vFin.src = baseUrl + 'esme.mp4';
+
+        let audioEnabledByUser = false;
+
+        // Desbloquear audio automáticamente al tocar la pantalla por primera vez
+        function unlockAudio() {
+            if (!audioEnabledByUser) {
+                audioEnabledByUser = true;
+                const activeVideo = document.querySelector('.bg-video.active');
+                if (activeVideo) {
+                    activeVideo.muted = false;
+                    activeVideo.play().catch(e => console.log('Audio unlocked:', e));
                 }
             }
         }
-        setInterval(updateActiveUsers, 4000);
-
-        const baseUrl = "https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/";
-
-        // Asignación de fuentes de video una sola vez
-        document.getElementById('video-all').src = baseUrl + 'fadime.mp4';
-        document.getElementById('video-emision').src = baseUrl + 'eleni.mp4';
-        document.getElementById('video-finalizada').src = baseUrl + 'esme.mp4';
+        document.body.addEventListener('click', unlockAudio, { once: true });
 
         const seriesData = [
             { id: 'askvegozyasi', title: 'Ask ve Gozyasi', status: 'finalizada', episodes: 7, link: 'https://t.me/+2BiDl_U8UCkzZDgx', poster: baseUrl + 'AskveGozyasi.jpg' },
@@ -319,6 +321,7 @@
         let currentCategory = 'all';
         let toastTimeout = null;
 
+        // Muestra el aviso informativo de audio durante 3 segundos
         function triggerSoundToast() {
             const toast = document.getElementById('sound-toast');
             toast.classList.add('show');
@@ -327,22 +330,7 @@
             
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000); // Desaparece automáticamente a los 3 segundos
-        }
-
-        function toggleMainAudio() {
-            const activeVideo = document.querySelector('.bg-video.active');
-            const toast = document.getElementById('sound-toast');
-            if (activeVideo) {
-                activeVideo.muted = !activeVideo.muted;
-                if (!activeVideo.muted) {
-                    toast.innerHTML = "🔊 AUDIO ACTIVADO";
-                } else {
-                    toast.innerHTML = "🔇 SILENCIADO";
-                }
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
-            }
+            }, 3000);
         }
 
         function switchBgVideo(cat) {
@@ -355,8 +343,15 @@
                 const targetVideo = document.getElementById('video-' + cat);
                 if (targetVideo) {
                     targetVideo.classList.add('active');
-                    targetVideo.play().catch(e => console.log("Reproducción pendiente de interacción", e));
-                    triggerSoundToast(); // Muestra el aviso vertical derecho por 3 segundos
+                    if (audioEnabledByUser) {
+                        targetVideo.muted = false;
+                    }
+                    targetVideo.play().catch(e => {
+                        console.log("Fallback silenciado para autoplay:", e);
+                        targetVideo.muted = true;
+                        targetVideo.play();
+                    });
+                    triggerSoundToast();
                 }
             }
         }
@@ -496,7 +491,6 @@
             }
         }
 
-        // Inicializar inicio limpio
         switchBgVideo('all');
         renderSeries();
     </script>
