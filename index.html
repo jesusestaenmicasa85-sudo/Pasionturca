@@ -281,9 +281,9 @@
         const vEmi = document.getElementById('video-emision');
         const vFin = document.getElementById('video-finalizada');
 
-        vAll.src = baseUrl + 'sevdamkaradeniz.mp4';
-        vEmi.src = baseUrl + 'sevdamkaradeniz.mp4';
-        vFin.src = baseUrl + 'sevdamkaradeniz.mp4';
+        vAll.src = baseUrl + 'fadime.mp4';
+        vEmi.src = baseUrl + 'eleni.mp4';
+        vFin.src = baseUrl + 'esme.mp4';
 
         let audioEnabledByUser = false;
 
@@ -301,6 +301,7 @@
         document.body.addEventListener('click', unlockAudio, { once: true });
 
         const seriesData = [
+            { id: 'ruyagibi', title: 'Ruya Gibi', status: 'finalizada', episodes: 13, link: 'https://t.me/+0M-f3V_ZSxZlYTkx', poster: baseUrl + 'RuyaGibi.jpg' },
             { id: 'askvegozyasi', title: 'Ask ve Gozyasi', status: 'finalizada', episodes: 7, link: 'https://t.me/+2BiDl_U8UCkzZDgx', poster: baseUrl + 'AskveGozyasi.jpg' },
             { id: 'gozlerikaradeniz', title: 'Gozleri KaraDeniz', status: 'finalizada', episodes: 16, link: 'https://t.me/+wBJQ_zkSCgA3ZmI5', poster: baseUrl + 'GozleriKaraDeniz.jpg' },
             { id: 'gunesindogduguyor', title: 'Güneşin Doğduğu Yer', status: 'emision', episodes: 7, link: 'https://t.me/+abyIRQIqnYw5NDEx', poster: baseUrl + 'GunesinDogduguYer.jpg' },
