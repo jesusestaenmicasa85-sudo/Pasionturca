@@ -102,6 +102,27 @@
         .categories { display: flex; gap: 10px; padding: 15px 20px 5px; overflow-x: auto; }
         .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); color: #ffffff; font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; backdrop-filter: blur(5px); }
         .category-tab.active { background: var(--accent-color); color: #fff; font-weight: 600; }
+        
+        /* Contenedor del Banner Publicitario Superior */
+        .ad-banner-wrapper {
+            padding: 10px 20px 0 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        #banner-ad-container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px 20px; }
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
         .card:active { transform: scale(0.97); }
@@ -183,6 +204,11 @@
         <div class="category-tab" onclick="setCategory('social', this)">Grupo oficial en las redes 🌐</div>
     </div>
 
+    <!-- Espacio del Banner Publicitario (Arriba de los episodios) -->
+    <div class="ad-banner-wrapper" id="banner-wrapper">
+        <div id="banner-ad-container"></div>
+    </div>
+
     <!-- Contenedor del Catálogo de Series -->
     <div class="grid" id="series-grid"></div>
 
@@ -245,7 +271,15 @@
         const tg = window.Telegram?.WebApp;
         const ADMIN_USER_ID = 0;
 
+        // Anuncio principal para abrir capítulos (ID: 54665)
         const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
+
+        // Configuración del banner publicitario superior con tu Block ID: int-57780
+        const BannerController = window.Adsgram ? window.Adsgram.init({ blockId: "int-57780", container: "banner-ad-container" }) : null;
+
+        if (BannerController) {
+            BannerController.show().catch(err => console.log("Banner cargado en contenedor", err));
+        }
 
         if (tg) {
             tg.expand();
@@ -395,15 +429,18 @@
 
             const grid = document.getElementById('series-grid');
             const searchBox = document.getElementById('search-box-container');
+            const bannerWrapper = document.getElementById('banner-wrapper');
             const socialZone = document.getElementById('social-container');
 
             if (cat === 'social') {
                 grid.style.display = 'none';
                 searchBox.style.display = 'none';
+                bannerWrapper.style.display = 'none';
                 socialZone.style.display = 'block';
             } else {
                 grid.style.display = 'grid';
                 searchBox.style.display = 'block';
+                bannerWrapper.style.display = 'flex';
                 socialZone.style.display = 'none';
                 renderSeries();
             }
