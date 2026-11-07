@@ -103,6 +103,54 @@
         .category-tab { padding: 6px 14px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); color: #ffffff; font-size: 0.85rem; white-space: nowrap; cursor: pointer; border: 1px solid transparent; backdrop-filter: blur(5px); }
         .category-tab.active { background: var(--accent-color); color: #fff; font-weight: 600; }
 
+        /* Estilos del Banner de Honor / Destacado Central */
+        .featured-honor-section {
+            padding: 15px 20px 5px;
+        }
+        .featured-honor-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(0, 0, 0, 0.9));
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+            transition: transform 0.2s;
+        }
+        .featured-honor-card:active { transform: scale(0.98); }
+        .featured-honor-banner {
+            width: 100%;
+            height: 210px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 15px;
+            box-sizing: border-box;
+            box-shadow: inset 0 -70px 40px rgba(0,0,0,0.8);
+        }
+        .featured-honor-content {
+            padding: 15px;
+            background: #000000;
+            text-align: center;
+        }
+        .featured-honor-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .featured-honor-msg {
+            font-size: 0.82rem;
+            color: #f3e8ff;
+            font-style: italic;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px 20px; }
         .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.15); cursor: pointer; transition: transform 0.2s; }
         .card:active { transform: scale(0.97); }
@@ -124,6 +172,7 @@
         .badge { position: absolute; top: 8px; right: 8px; padding: 3px 8px; border-radius: 8px; font-size: 0.65rem; font-weight: bold; z-index: 2; }
         .badge-emision { background: var(--success); color: #fff; }
         .badge-finalizada { background: rgba(255, 255, 255, 0.25); color: #fff; }
+        .badge-honor { background: var(--danger); color: #fff; }
         
         .card-info { padding: 10px; background-color: #000000; }
         .card-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -182,6 +231,21 @@
         <div class="category-tab" onclick="setCategory('emision', this)">En Emisión</div>
         <div class="category-tab" onclick="setCategory('finalizada', this)">Completadas</div>
         <div class="category-tab" onclick="setCategory('social', this)">Grupo oficial en las redes 🌐</div>
+    </div>
+
+    <!-- Sección Honorífica Central / Puesto #1 (Halef T2) -->
+    <div class="featured-honor-section" id="featured-honor-container">
+        <div class="featured-honor-card" onclick="openSeries('halef2')">
+            <div class="featured-honor-banner" style="background-image: url('https://jesusestaenmicasa85-sudo.github.io/Pasionturca/series/halef2.jpg')">
+                <span class="badge badge-honor">-2 capítulos</span>
+                <span style="background: rgba(0,0,0,0.7); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: #fff;">⭐ Puesto de Honor</span>
+            </div>
+            <div class="featured-honor-content">
+                <div class="featured-honor-title">Halef T2</div>
+                <div class="card-subtitle">6 Cap. disponibles</div>
+                <div class="featured-honor-msg">"Siempre tendrás un lugar en nuestros corazones"</div>
+            </div>
+        </div>
     </div>
 
     <!-- Contenedor del Catálogo de Series -->
@@ -249,7 +313,7 @@
         // Anuncio principal para abrir capítulos (ID: 54665)
         const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
 
-        // Configuración del nuevo bloque publicitario (Block ID: int-57780) sin el parámetro container
+        // Configuración del nuevo bloque publicitario (Block ID: int-57780)
         const SocialAdController = window.Adsgram ? window.Adsgram.init({ blockId: "int-57780" }) : null;
 
         function triggerSocialAd(e, targetUrl) {
@@ -287,7 +351,6 @@
 
         let audioEnabledByUser = false;
 
-        // Desbloquear audio automáticamente al tocar la pantalla por primera vez
         function unlockAudio() {
             if (!audioEnabledByUser) {
                 audioEnabledByUser = true;
@@ -301,24 +364,30 @@
         document.body.addEventListener('click', unlockAudio, { once: true });
 
         const seriesData = [
+            // Series más populares en emisión ordenadas debajo de la #1
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 5, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
+            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 8, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
+            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 33, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
+            { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 4, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
+            { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 8, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
+            
+            // Nueva serie incorporada
+            { id: 'kopuk', title: 'Kopuk', status: 'emision', episodes: 5, link: 'https://t.me/+OTX7RkwXKG8zN2Nh', poster: baseUrl + 'kopuk.jpg' },
+
+            // Resto del catálogo oficial
             { id: 'ruyagibi', title: 'Ruya Gibi', status: 'finalizada', episodes: 13, link: 'https://t.me/+0M-f3V_ZSxZlYTkx', poster: baseUrl + 'RuyaGibi.jpg' },
             { id: 'askvegozyasi', title: 'Ask ve Gozyasi', status: 'finalizada', episodes: 7, link: 'https://t.me/+2BiDl_U8UCkzZDgx', poster: baseUrl + 'AskveGozyasi.jpg' },
             { id: 'gozlerikaradeniz', title: 'Gozleri KaraDeniz', status: 'finalizada', episodes: 16, link: 'https://t.me/+wBJQ_zkSCgA3ZmI5', poster: baseUrl + 'GozleriKaraDeniz.jpg' },
             { id: 'gunesindogduguyor', title: 'Güneşin Doğduğu Yer', status: 'emision', episodes: 8, link: 'https://t.me/+abyIRQIqnYw5NDEx', poster: baseUrl + 'GunesinDogduguYer.jpg' },
             { id: 'ayniyagmuraltinda', title: 'Aynı yağmur altında', status: 'finalizada', episodes: 7, link: 'https://t.me/+RO-tOt9joNUyNjgx', poster: baseUrl + 'ayniyagmuraltinda.jpg' },
             { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 19, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
-            { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 4, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
             { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 5, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
             { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 6, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
-            { id: 'arafta2', title: 'ARAFTA T2', status: 'emision', episodes: 33, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
-            { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 8, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
             { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 20, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
             { id: 'halef2', title: 'Halef T2', status: 'emision', episodes: 6, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'halef2.jpg' },
             { id: 'asktaht', title: 'Ask ve Taht', status: 'finalizada', episodes: 5, link: 'https://t.me/+fsxUvsmHVYhhNTA5', poster: baseUrl + 'askvetaht.jpg' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 5, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
             { id: 'abi2', title: 'ABI T2', status: 'finalizada', episodes: 5, link: 'https://t.me/+oRSGcPqWYjI5NTAx', poster: baseUrl + 'abi.jpg' },
             { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 6, link: 'https://t.me/+q94zhfhkhsgwNDRh', poster: baseUrl + 'anneyarisi.jpg' },
-            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 8, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
             { id: 'sevdanbirates1', title: 'Sevdan Bir Ates', status: 'emision', episodes: 9, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanbirates1.jpg' },
             { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 9, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
             { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 8, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
@@ -338,7 +407,6 @@
         let currentCategory = 'all';
         let toastTimeout = null;
 
-        // Muestra el aviso informativo de audio durante 3 segundos
         function triggerSoundToast() {
             const toast = document.getElementById('sound-toast');
             toast.classList.add('show');
@@ -364,7 +432,6 @@
                         targetVideo.muted = false;
                     }
                     targetVideo.play().catch(e => {
-                        console.log("Fallback silenciado para autoplay:", e);
                         targetVideo.muted = true;
                         targetVideo.play();
                     });
@@ -413,14 +480,17 @@
             const grid = document.getElementById('series-grid');
             const searchBox = document.getElementById('search-box-container');
             const socialZone = document.getElementById('social-container');
+            const featuredHonor = document.getElementById('featured-honor-container');
 
             if (cat === 'social') {
                 grid.style.display = 'none';
                 searchBox.style.display = 'none';
+                featuredHonor.style.display = 'none';
                 socialZone.style.display = 'block';
             } else {
                 grid.style.display = 'grid';
                 searchBox.style.display = 'block';
+                featuredHonor.style.display = (cat === 'all' || cat === 'emision') ? 'block' : 'none';
                 socialZone.style.display = 'none';
                 renderSeries();
             }
