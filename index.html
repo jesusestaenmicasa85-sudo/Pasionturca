@@ -558,7 +558,7 @@
             }
         }
 
-        // Cierre forzado y redirección garantizada exactamente a los 5 segundos (5000 ms)
+        // Cierre forzado y redirección ajustados exactamente a 31 segundos (31000 ms)
         function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
@@ -574,8 +574,8 @@
                 }
             };
 
-            // Temporizador de seguridad ajustado a 5 segundos exactos
-            const hardTimeout = setTimeout(finishProcess, 5000);
+            // Temporizador de seguridad ajustado a 31 segundos exactos
+            const hardTimeout = setTimeout(finishProcess, 31000);
 
             if (AdController) {
                 AdController.show()
@@ -589,7 +589,7 @@
                     });
             } else {
                 clearTimeout(hardTimeout);
-                setTimeout(finishProcess, 800);
+                setTimeout(finishProcess, 1000);
             }
         }
 
