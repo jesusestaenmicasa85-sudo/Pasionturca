@@ -558,23 +558,37 @@
             }
         }
 
-        // Automatización corregida y robusta para la vista de anuncios y redirección
-        async function openChapter(channelLink, episode) {
+        // Automatización 100% garantizada con Temporizador de Seguridad (Timeout)
+        function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
-            try {
-                if (AdController) {
-                    await AdController.show();
-                } else {
-                    // Simulación de respaldo si AdController no está disponible
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+            let hasRedirected = false;
+
+            const executeRedirect = () => {
+                if (!hasRedirected) {
+                    hasRedirected = true;
+                    adContainer.style.display = 'none';
+                    redirectToChapter(channelLink);
                 }
-            } catch (error) {
-                console.log("Anuncio omitido o error en la carga:", error);
-            } finally {
-                adContainer.style.display = 'none';
-                redirectToChapter(channelLink);
+            };
+
+            // Temporizador de seguridad: Si Adsgram no responde en 3.5 segundos, redirige de todos modos
+            const safetyTimeout = setTimeout(executeRedirect, 3500);
+
+            if (AdController) {
+                AdController.show()
+                    .then(() => {
+                        clearTimeout(safetyTimeout);
+                        executeRedirect();
+                    })
+                    .catch(() => {
+                        clearTimeout(safetyTimeout);
+                        executeRedirect();
+                    });
+            } else {
+                clearTimeout(safetyTimeout);
+                setTimeout(executeRedirect, 800);
             }
         }
 
