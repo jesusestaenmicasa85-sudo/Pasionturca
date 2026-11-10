@@ -196,6 +196,10 @@
         .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .chapter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px 15px; border-radius: 10px; color: #fff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 0.88rem; }
         .ad-countdown { text-align: center; padding: 12px; background: rgba(168, 85, 247, 0.1); border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-color); }
+        
+        /* Botón de respaldo visible tras el anuncio */
+        .ver-episodio-btn { display: none; width: 100%; padding: 14px; background: var(--success); color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; text-align: center; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
+
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.8rem; color: #ffffff; margin-bottom: 5px; }
         .form-input, .form-select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; font-size: 0.9rem; }
@@ -285,9 +289,14 @@
                 </div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
+            
             <div id="ad-container" class="ad-countdown" style="display: none;">
-                <p style="font-size: 0.8rem;">🍿 Cargando anuncio...</p>
+                <p style="font-size: 0.8rem;" id="ad-status-text">🍿 Cargando anuncio...</p>
             </div>
+
+            <!-- Botón interactivo para garantizar la redirección limpia por clic del usuario -->
+            <button id="ver-episodio-btn" class="ver-episodio-btn" onclick="executeFinalRedirect()">🎬 Ver Episodio Ahora</button>
+
             <div class="chapters-list" id="chapters-container"></div>
         </div>
     </div>
@@ -406,6 +415,7 @@
 
         let currentCategory = 'all';
         let toastTimeout = null;
+        let activeChannelLink = ''; // Variable global para almacenar el enlace destino del capítulo actual
 
         function triggerSoundToast() {
             const toast = document.getElementById('sound-toast');
@@ -523,6 +533,7 @@
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
             document.getElementById('ad-container').style.display = 'none';
+            document.getElementById('ver-episodio-btn').style.display = 'none';
         }
 
         function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
@@ -550,46 +561,58 @@
             document.getElementById('new-link').value = '';
         }
 
-        function redirectToChapter(channelLink) {
-            if (tg && tg.openTelegramLink) {
-                tg.openTelegramLink(channelLink);
-            } else {
-                window.open(channelLink, '_blank');
+        // Función que ejecuta el botón de respaldo al recibir el clic real del usuario
+        function executeFinalRedirect() {
+            if (activeChannelLink) {
+                document.getElementById('ad-container').style.display = 'none';
+                document.getElementById('ver-episodio-btn').style.display = 'none';
+                closeModal();
+                if (tg && tg.openTelegramLink) {
+                    tg.openTelegramLink(activeChannelLink);
+                } else {
+                    window.open(activeChannelLink, '_blank');
+                }
             }
         }
 
-        // Cierre forzado y redirección ajustados exactamente a 31 segundos (31000 ms)
+        // Flujo principal con temporizador de 31 segundos y aparición del botón de clic
         function openChapter(channelLink, episode) {
+            activeChannelLink = channelLink; // Guardamos el enlace del capítulo actual
+            
             const adContainer = document.getElementById('ad-container');
+            const statusText = document.getElementById('ad-status-text');
+            const verEpBtn = document.getElementById('ver-episodio-btn');
+            
             adContainer.style.display = 'block';
+            statusText.innerText = '🍿 Cargando anuncio...';
+            verEpBtn.style.display = 'none'; // Oculto mientras corre el anuncio
 
-            let executed = false;
+            let adFinished = false;
 
-            const finishProcess = () => {
-                if (!executed) {
-                    executed = true;
-                    adContainer.style.display = 'none';
-                    closeModal(); 
-                    redirectToChapter(channelLink);
+            const showButtonState = () => {
+                if (!adFinished) {
+                    adFinished = true;
+                    statusText.innerText = '✅ ¡Anuncio finalizado!';
+                    verEpBtn.style.display = 'block'; // Aparece el botón para el clic manual
                 }
             };
 
-            // Temporizador de seguridad ajustado a 31 segundos exactos
-            const hardTimeout = setTimeout(finishProcess, 31000);
+            // Temporizador de seguridad de 31 segundos exactos
+            const hardTimeout = setTimeout(showButtonState, 31000);
 
             if (AdController) {
                 AdController.show()
                     .then(() => {
                         clearTimeout(hardTimeout);
-                        finishProcess();
+                        showButtonState();
                     })
                     .catch(() => {
                         clearTimeout(hardTimeout);
-                        finishProcess();
+                        showButtonState();
                     });
             } else {
                 clearTimeout(hardTimeout);
-                setTimeout(finishProcess, 1000);
+                setTimeout(showButtonState, 1000);
             }
         }
 
