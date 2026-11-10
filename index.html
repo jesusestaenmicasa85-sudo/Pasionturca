@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -558,37 +558,38 @@
             }
         }
 
-        // Temporizador de seguridad ajustado a 10 segundos (10000 ms)
+        // Cierre forzado y redirección garantizada exactamente a los 5 segundos (5000 ms)
         function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
-            let hasRedirected = false;
+            let executed = false;
 
-            const executeRedirect = () => {
-                if (!hasRedirected) {
-                    hasRedirected = true;
+            const finishProcess = () => {
+                if (!executed) {
+                    executed = true;
                     adContainer.style.display = 'none';
+                    closeModal(); 
                     redirectToChapter(channelLink);
                 }
             };
 
-            // Seguridad de 10 segundos en caso de que Adsgram tarde en responder
-            const safetyTimeout = setTimeout(executeRedirect, 10000);
+            // Temporizador de seguridad ajustado a 5 segundos exactos
+            const hardTimeout = setTimeout(finishProcess, 5000);
 
             if (AdController) {
                 AdController.show()
                     .then(() => {
-                        clearTimeout(safetyTimeout);
-                        executeRedirect();
+                        clearTimeout(hardTimeout);
+                        finishProcess();
                     })
                     .catch(() => {
-                        clearTimeout(safetyTimeout);
-                        executeRedirect();
+                        clearTimeout(hardTimeout);
+                        finishProcess();
                     });
             } else {
-                clearTimeout(safetyTimeout);
-                setTimeout(executeRedirect, 800);
+                clearTimeout(hardTimeout);
+                setTimeout(finishProcess, 800);
             }
         }
 
