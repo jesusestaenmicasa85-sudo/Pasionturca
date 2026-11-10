@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -558,23 +558,23 @@
             }
         }
 
-        function openChapter(channelLink, episode) {
+        // Automatización corregida y robusta para la vista de anuncios y redirección
+        async function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
 
-            if (AdController) {
-                AdController.show().then((result) => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                }).catch((result) => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                });
-            } else {
-                setTimeout(() => {
-                    adContainer.style.display = 'none';
-                    redirectToChapter(channelLink);
-                }, 1000);
+            try {
+                if (AdController) {
+                    await AdController.show();
+                } else {
+                    // Simulación de respaldo si AdController no está disponible
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            } catch (error) {
+                console.log("Anuncio omitido o error en la carga:", error);
+            } finally {
+                adContainer.style.display = 'none';
+                redirectToChapter(channelLink);
             }
         }
 
