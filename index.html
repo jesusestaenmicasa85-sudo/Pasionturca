@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -558,7 +558,7 @@
             }
         }
 
-        // Automatización 100% garantizada con Temporizador de Seguridad (Timeout)
+        // Temporizador de seguridad ajustado a 10 segundos (10000 ms)
         function openChapter(channelLink, episode) {
             const adContainer = document.getElementById('ad-container');
             adContainer.style.display = 'block';
@@ -573,8 +573,8 @@
                 }
             };
 
-            // Temporizador de seguridad: Si Adsgram no responde en 3.5 segundos, redirige de todos modos
-            const safetyTimeout = setTimeout(executeRedirect, 3500);
+            // Seguridad de 10 segundos en caso de que Adsgram tarde en responder
+            const safetyTimeout = setTimeout(executeRedirect, 10000);
 
             if (AdController) {
                 AdController.show()
