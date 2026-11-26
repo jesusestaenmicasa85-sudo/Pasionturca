@@ -11,6 +11,22 @@
     <!-- Script de Monetización Adsgram -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
+    <!-- Script de Monetización RichAds -->
+    <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
+    <script>
+        try {
+            if (typeof TelegramAdsController === "function") {
+                window.TelegramAdsController = new TelegramAdsController();
+                window.TelegramAdsController.initialize({
+                    pubId: "1025892",
+                    appId: "9722",
+                });
+            }
+        } catch (err) {
+            console.log("RichAds init fallback:", err);
+        }
+    </script>
+
     <style>
         :root {
             --bg-color: #0d0714;
@@ -166,7 +182,7 @@
         <video id="video-finalizada" class="bg-video" autoplay loop playsinline muted></video>
     </div>
 
-    <!-- Cartel Informativo de Audio (Sin clicks, solo notificación visual) -->
+    <!-- Cartel Informativo de Audio Flotante -->
     <div class="vertical-sound-toast" id="sound-toast">
         🔊 VIDEO CON AUDIO
     </div>
@@ -255,20 +271,55 @@
         const tg = window.Telegram?.WebApp;
         const ADMIN_USER_ID = 0;
 
-        // Anuncio principal para abrir capítulos (ID: 54665)
-        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "54665" }) : null;
+        // Controladores independientes para evitar colisiones entre bloques
+        const AdController = (window.Adsgram && typeof window.Adsgram.init === "function")
+            ? window.Adsgram.init({ blockId: "54665" })
+            : null;
 
-        // Configuración del nuevo bloque publicitario (Block ID: int-57780)
-        const SocialAdController = window.Adsgram ? window.Adsgram.init({ blockId: "int-57780" }) : null;
+        const SocialAdController = (window.Adsgram && typeof window.Adsgram.init === "function")
+            ? window.Adsgram.init({ blockId: "int-57780" })
+            : null;
+
+        let isAdPlaying = false;
+
+        function openExternalTarget(targetUrl) {
+            if (tg && typeof tg.openTelegramLink === "function" && targetUrl.includes("t.me/")) {
+                tg.openTelegramLink(targetUrl);
+            } else {
+                window.open(targetUrl, '_blank');
+            }
+        }
 
         function triggerSocialAd(e, targetUrl) {
-            if (SocialAdController) {
+            if (isAdPlaying) {
                 e.preventDefault();
-                SocialAdController.show().then(() => {
-                    window.open(targetUrl, '_blank');
-                }).catch(() => {
-                    window.open(targetUrl, '_blank');
-                });
+                return;
+            }
+
+            if (SocialAdController && typeof SocialAdController.show === "function") {
+                e.preventDefault();
+                isAdPlaying = true;
+                let redirected = false;
+
+                const goTarget = () => {
+                    if (!redirected) {
+                        redirected = true;
+                        isAdPlaying = false;
+                        openExternalTarget(targetUrl);
+                    }
+                };
+
+                const socialFallbackTimer = setTimeout(goTarget, 5000);
+
+                SocialAdController.show()
+                    .then(() => {
+                        clearTimeout(socialFallbackTimer);
+                        goTarget();
+                    })
+                    .catch(() => {
+                        clearTimeout(socialFallbackTimer);
+                        goTarget();
+                    });
             }
         }
 
@@ -290,9 +341,9 @@
         const vEmi = document.getElementById('video-emision');
         const vFin = document.getElementById('video-finalizada');
 
-        vAll.src = baseUrl + '1.mp4';
-        vEmi.src = baseUrl + '1.mp4';
-        vFin.src = baseUrl + '1.mp4';
+        vAll.src = baseUrl + 'YILSER3.mp4';
+        vEmi.src = baseUrl + 'YILSER3.mp4';
+        vFin.src = baseUrl + 'YILSER3.mp4';
 
         let audioEnabledByUser = false;
 
@@ -310,32 +361,32 @@
 
         const seriesData = [
             // Series principales en el orden prioritario solicitado
-            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 11, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
-            { id: 'arafta2', title: 'Arafta T2', status: 'emision', episodes: 38, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
+            { id: 'uzaksehir', title: 'Uzak Şehir T3', status: 'emision', episodes: 10, link: 'https://t.me/+H7k3D6FAwug2MGYx', poster: baseUrl + 'uzaksehir3.jpg' },
+            { id: 'arafta2', title: 'Arafta T2', status: 'emision', episodes: 37, link: 'https://t.me/+pLxw4RXS9vE0YTc5', poster: baseUrl + 'arafta2.jpg' },
             { id: 'tasacakbudeniz2', title: 'Tusacak bu deniz T2', status: 'emision', episodes: 8, link: 'https://t.me/+lEYenuKLJztkNjBh', poster: baseUrl + 'tasacakbudeniz2.jpg' },
             { id: 'gullergunahlar', title: 'Güller ve Günahlar 2', status: 'emision', episodes: 10, link: 'https://t.me/+sgrRg_6eJokzYjJh', poster: baseUrl + 'gullervegunahlar2.jpg' },
-            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 8, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
-            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 9, link: 'https://t.me/+gfxdm3nRBQpkMmMx', poster: baseUrl + 'anneyarisi.jpg' },
-            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 26, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
+            { id: 'yeralti2', title: 'Yeralti T2', status: 'emision', episodes: 7, link: 'https://t.me/+pi35KULn2tthNDIx', poster: baseUrl + 'yeralti2.jpg' },
+            { id: 'anneyarisi', title: 'Anne Yarisi', status: 'emision', episodes: 8, link: 'https://t.me/+gfxdm3nRBQpkMmMx', poster: baseUrl + 'anneyarisi.jpg' },
+            { id: 'daha17', title: 'DAHA17 T1', status: 'emision', episodes: 25, link: 'https://t.me/+8byaYGNbIDpmMTY5', poster: baseUrl + 'daha17.jpg' },
 
             // Serie nueva agregada
             { id: 'kizilcikserbetit4', title: 'Kizilcik Serbeti T5', status: 'emision', episodes: 44, link: 'https://t.me/+OvBKJTxtUpZiZmFh', poster: baseUrl + 'SORBETE.jpg' },
 
             // Resto de las series en emisión
-            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 11, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
+            { id: 'evlilikguzel', title: 'Evlilik Guzeldir', status: 'emision', episodes: 10, link: 'https://t.me/+kgExQ8EUDdgyMzZh', poster: baseUrl + 'evelikguzeldir.jpg' },
             { id: 'sevdamkaradeniz', title: 'Sevdam Karadeniz', status: 'emision', episodes: 4, link: 'https://t.me/+', poster: baseUrl + 'sevdamkaradeniz.jpg' },
             { id: 'sevdigimsensin2', title: 'Sevdigim sensin T2', status: 'emision', episodes: 10, link: 'https://t.me/+nZ1OxjeKFJc0Nzcx', poster: baseUrl + 'sevdigimsensin2.jpg' },
             { id: 'gunesindogduguyor', title: 'Güneşin Doğduğu Yer', status: 'emision', episodes: 9, link: 'https://t.me/+abyIRQIqnYw5NDEx', poster: baseUrl + 'GunesinDogduguYer.jpg' },
-            { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 22, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
+            { id: 'altiustuistanbul', title: 'Altı Üstü İstanbul', status: 'emision', episodes: 21, link: 'https://t.me/+', poster: baseUrl + 'altiustuistambul1.jpg' },
             { id: 'baskalarininhayati', title: 'Başkalarının Hayatı', status: 'emision', episodes: 8, link: 'https://t.me/+EyUPG22tFMBjNjg5', poster: baseUrl + 'baskalarininhayati.jpg' },
             { id: 'muhtemel1', title: 'MUHTEMEL ASK T1', status: 'emision', episodes: 22, link: 'https://t.me/+lKj8tnDm2i4zZTZh', poster: baseUrl + 'muhtemelask.jpg' },
-            { id: 'sevdanbirates1', title: 'Sevdan Bir Ates', status: 'emision', episodes: 12, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanbirates1.jpg' },
-            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 12, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
-            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 11, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
+            { id: 'sevdanbirates1', title: 'Sevdan Bir Ates', status: 'emision', episodes: 11, link: 'https://t.me/+XBHRFHhky2MxZWI5', poster: baseUrl + 'sevdanbirates1.jpg' },
+            { id: 'tuzlukahve', title: 'Tuzlu Kahve', status: 'emision', episodes: 11, link: 'https://t.me/+c9wQ6VzuF-NkZDFh', poster: baseUrl + 'tuzlukahve.jpg' },
+            { id: 'haysiyet', title: 'Haysiyet', status: 'emision', episodes: 10, link: 'https://t.me/+k0r7HsX3zPdjYWEx', poster: baseUrl + 'haysiyet.jpg' },
             { id: 'carpinti', title: 'Carpinti', status: 'finalizada', episodes: 13, link: 'https://t.me/+ANwVy_DsbKllNTgx', poster: baseUrl + 'carpinti.jpg' },
 
             // Series completas / finalizadas al final
-            { id: 'halef2', title: 'Halef T2', status: 'finalizada', episodes: 8, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'halef2.jpg' },
+            { id: 'halef2', title: 'Halef T2', status: 'finalizada', episodes: 8, link: 'https://t.me/+3wQxoBw6VzVjYWQ5', poster: baseUrl + 'YILSER.jpg' },
             { id: 'kopuk', title: 'Kopuk', status: 'finalizada', episodes: 5, link: 'https://t.me/+OTX7RkwXKG8zN2Nh', poster: baseUrl + 'kopuk.jpg' },
             { id: 'ruyagibi', title: 'Ruya Gibi', status: 'finalizada', episodes: 13, link: 'https://t.me/+0M-f3V_ZSxZlYTkx', poster: baseUrl + 'RuyaGibi.jpg' },
             { id: 'askvegozyasi', title: 'Ask ve Gozyasi', status: 'finalizada', episodes: 7, link: 'https://t.me/+2BiDl_U8UCkzZDgx', poster: baseUrl + 'AskveGozyasi.jpg' },
@@ -355,7 +406,8 @@
 
         let currentCategory = 'all';
         let toastTimeout = null;
-        let activeChannelLink = ''; // Variable global para almacenar el enlace destino del capítulo actual
+        let activeChannelLink = '';
+        let chapterHardTimeout = null;
 
         function triggerSoundToast() {
             const toast = document.getElementById('sound-toast');
@@ -468,6 +520,11 @@
         }
 
         function closeModal() {
+            if (chapterHardTimeout) {
+                clearTimeout(chapterHardTimeout);
+                chapterHardTimeout = null;
+            }
+            isAdPlaying = false;
             document.getElementById('modal').classList.remove('active');
             document.getElementById('ad-container').style.display = 'none';
             document.getElementById('ver-episodio-btn').style.display = 'none';
@@ -501,20 +558,23 @@
         // Función que ejecuta el botón de respaldo al recibir el clic real del usuario
         function executeFinalRedirect() {
             if (activeChannelLink) {
-                document.getElementById('ad-container').style.display = 'none';
-                document.getElementById('ver-episodio-btn').style.display = 'none';
+                const urlToOpen = activeChannelLink;
                 closeModal();
-                if (tg && tg.openTelegramLink) {
-                    tg.openTelegramLink(activeChannelLink);
-                } else {
-                    window.open(activeChannelLink, '_blank');
-                }
+                openExternalTarget(urlToOpen);
             }
         }
 
         // Flujo principal con temporizador de 31 segundos y aparición del botón de clic
         function openChapter(channelLink, episode) {
-            activeChannelLink = channelLink; // Guardamos el enlace del capítulo actual
+            if (isAdPlaying) return;
+
+            if (chapterHardTimeout) {
+                clearTimeout(chapterHardTimeout);
+                chapterHardTimeout = null;
+            }
+
+            activeChannelLink = channelLink;
+            isAdPlaying = true;
             
             const adContainer = document.getElementById('ad-container');
             const statusText = document.getElementById('ad-status-text');
@@ -522,33 +582,39 @@
             
             adContainer.style.display = 'block';
             statusText.innerText = '🍿 Cargando anuncio...';
-            verEpBtn.style.display = 'none'; // Oculto mientras corre el anuncio
+            verEpBtn.style.display = 'none';
 
             let adFinished = false;
 
             const showButtonState = () => {
                 if (!adFinished) {
                     adFinished = true;
+                    isAdPlaying = false;
                     statusText.innerText = '✅ ¡Anuncio finalizado!';
-                    verEpBtn.style.display = 'block'; // Aparece el botón para el clic manual
+                    verEpBtn.style.display = 'block';
                 }
             };
 
             // Temporizador de seguridad de 31 segundos exactos
-            const hardTimeout = setTimeout(showButtonState, 31000);
+            chapterHardTimeout = setTimeout(showButtonState, 31000);
 
-            if (AdController) {
-                AdController.show()
-                    .then(() => {
-                        clearTimeout(hardTimeout);
-                        showButtonState();
-                    })
-                    .catch(() => {
-                        clearTimeout(hardTimeout);
-                        showButtonState();
-                    });
+            if (AdController && typeof AdController.show === "function") {
+                try {
+                    AdController.show()
+                        .then(() => {
+                            clearTimeout(chapterHardTimeout);
+                            showButtonState();
+                        })
+                        .catch(() => {
+                            clearTimeout(chapterHardTimeout);
+                            showButtonState();
+                        });
+                } catch (err) {
+                    clearTimeout(chapterHardTimeout);
+                    showButtonState();
+                }
             } else {
-                clearTimeout(hardTimeout);
+                clearTimeout(chapterHardTimeout);
                 setTimeout(showButtonState, 1000);
             }
         }
